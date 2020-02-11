@@ -1,0 +1,167 @@
+\documentclass{ffslides}
+\ffpage{60}{\numexpr 9/16}
+\usepackage{fancyvrb}
+\begin{document}
+\fvset{numbers=left,numbersep=3pt,frame=single,firstnumber=1,tabsize=4}
+
+
+\normalpage{Lab 3 - lab.h}{
+	\VerbatimInput[firstline=18,lastline=53]{../includes/lab.h}
+}
+\btext{.30}{.20}{.30}{\large Libraries:\\
+iostream: for for stdin/stdout via terminal\\
+fstream: for read/write file\\
+vector: for vector\\
+abc: ABC to SOX associative table}
+\btext{.30}{.35}{.30}{\large Structs:\\
+Note: for the each note\\
+Fragment: for the stack element\\
+MyStack: stack\\~\\
+\large Global:\\
+TEMPO: for the tempo of the song}
+
+
+\normalpage{Lab 3 - lab.h}{
+	\VerbatimInput[firstline=56,firstnumber=37]{../includes/lab.h}
+}
+\btext{.10}{.10}{.30}{\large Function Declaration\\
+}
+
+
+\normalpage{Lab 3 - abc.h}{
+	\VerbatimInput[firstline=18,lastline=59]{../includes/abc.h}
+	\VerbatimInput[firstline=18,lastline=40]{../srcs/abc.cpp}
+}
+\btext{.40}{.25}{.40}{\large ABC header:\\
+This is a custom header and cpp file for\\
+translating ABC notation to SOX notation.\\
+There is an associative table that\\
+converts ABC notation to SOX notation.}
+\btext{.40}{.60}{.40}{\large ABC:\\
+The associative table is declared here\\
+(only for measure notations), and\\
+it will be exported as a global variable.}
+
+
+\normalpage{Lab 3 - readABCfile.cpp}{
+	\VerbatimInput[firstline=18]{../srcs/readABCfile.cpp}
+}
+\btext{.45}{.30}{.40}{\large readABCfile:\\
+This function opens the file and reads the data.\\
+Then, store the data into a vector of strings.\\
+It will skip the information part in the beginning,\\
+only store L:, which is the tempo.}
+\btext{.45}{.75}{.40}{\large getTempo:\\
+This function calculates the tempo of the song\\
+based on 1/4 is tempo 1.}
+
+\normalpage{Lab 3 - convertABCtoSOX.cpp}{
+	\VerbatimInput[firstline=18,lastline=59]{../srcs/convertABCtoSOX.cpp}
+}
+\btext{.55}{.30}{.35}{\large convertABCtoSOX:\\
+This function checks the ABC notation and\\
+covert it into the SOX notation.\\
+Also, it gets the duration and fragments.\\~\\
+It checks every letter in the string and\\
+gets the note.\\
+For the duration, gets the number using atoi.\\
+At the end it changes lower case to upper case\\
+using AND bit operator.}
+
+
+\normalpage{Lab 3 - createPlayCmd.cpp}{
+	\VerbatimInput[firstline=18,lastline=50]{../srcs/createPlayCmd.cpp}
+}
+\btext{.10}{.35}{.40}{\large createPlayCmd:\\
+This function takes a Note struct and\\
+creates a SOX command. It combines the command\\
+template and the data in the struct.\\}
+
+
+
+\normalpage{Lab 3 - playSong.cpp}{
+	\VerbatimInput[firstline=18,lastline=59]{../srcs/playSong.cpp}
+}
+\btext{.53}{.30}{.40}{\large playSong:\\
+This function takes the soxVector and plays the song.\\
+First, it creates a new stack to store the indices.\\
+If it meets repeat fragment while it plays the song,\\
+it will push the current index into the stack.\\
+Then, it plays the repeat part again and comes back to\\
+the stored index using pop.\\
+When the song ends, it destroy the stack.}
+
+
+\normalpage{Lab 3 - playSong.cpp}{
+	\VerbatimInput[firstline=60,firstnumber=43]{../srcs/playSong.cpp}
+}
+
+
+\normalpage{Lab 3 - myCreate.cpp}{
+	\VerbatimInput[firstline=18,lastline=59]{../srcs/myCreate.cpp}
+}
+\btext{.45}{.25}{.40}{\large myCreate:\\
+It creates a new stack.\\
+If allocation fails, returns false.\\~\\
+UNIT\_TEST:\\
+I created several times with different sizes.\\
+Then I checked if it returns true.\\
+I couldn't test failure since I don't know\\
+how to make 'new' fail.}
+
+
+\normalpage{Lab 3 - myPush.cpp}{
+	\VerbatimInput[firstline=18,lastline=59]{../srcs/myPush.cpp}
+}
+\btext{.45}{.25}{.40}{\large myPush:\\
+It pushes the item into the stack.\\
+If the stack is full, returns false.\\~\\
+UNIT\_TEST:\\
+I created a new stack with size 2.\\
+Then, I push something twice and check if\\
+the stack has the items in the proper order.\\
+Also, I pushed one more time so that\\
+I can check the failure when it is full.}
+
+\normalpage{Lab 3 - myPop.cpp}{
+	\VerbatimInput[firstline=18,lastline=59]{../srcs/myPop.cpp}
+}
+\btext{.45}{.25}{.40}{\large myPop:\\
+It pops the item in the top of the stack.\\
+If the stack is empty, returns false.\\~\\
+UNIT\_TEST:\\
+I pushed 2 items and check if it pops\\
+in the proper order.\\
+After that, I tried to pop the empty stack\\
+and checked if it returns false.}
+
+
+\normalpage{Lab 3 - myDestory.cpp}{
+	\VerbatimInput[firstline=18,lastline=59]{../srcs/myDestroy.cpp}
+}
+\btext{.45}{.25}{.40}{\large myDestroy:\\
+It deletes the stack and set it to null pointer.\\~\\
+UNIT\_TEST:\\
+Since delete functions doesn't return any bool\\
+expression and the data stays even it was deleted,\\
+it is hard to check success/fail of the function.\\
+So, I guess it worked if the program doesn't\\
+throw an execption error.}
+\btext{.05}{.55}{.30}{\Huge \textsc{CATCH TEST}}
+\putfig{.05}{.60}{.80}{catchtest.eps}
+
+
+\normalpage{Lab 3 - Result Screenshots}{
+}
+\btext{.05}{.11}{.15}{\Huge \textsc{Convert}}
+\putfig{.05}{.15}{.60}{convert.eps}
+\putfig{.65}{.10}{.30}{convert_res.eps}
+
+
+\normalpage{Lab 3 - Result Screenshots}{
+}
+\btext{.05}{.11}{.15}{\Huge \textsc{Result}}
+\putfig{.05}{.15}{.80}{running.eps}
+
+
+\end{document}

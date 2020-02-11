@@ -1,0 +1,223 @@
+=TEX
+\documentclass{ffslides}
+\ffpage{42}{\numexpr 9/16}
+\usepackage{ProofPower}
+\usepackage{fancyvrb}
+\begin{document}
+\obeyspaces
+
+\normalpage{CS113 LAB 2: Truth Values Generator}{
+=SML
+PolyML.print_depth 64;
+exception OutOfRange;
+fun expand((a:'a,b:'a),[]) = [] |
+    expand((a:'a,b:'a), q::qs : 'a list list) =
+    [q @ [a]] @ [q @ [b]] @ expand ((a,b), qs) : 'a list list;
+fun tv(0, (_, _)) = [[]] : 'a list list |
+    tv(1, (a:'a,b:'a)) = [[a],[b]] |
+    tv(d, (a:'a,b:'a)) = expand((a,b), tv(d-1, (a,b)));
+=TEX
+}
+\putfig{.05}{.42}{.80}{truth_values}
+
+\normalpage{CS113 LAB 2: NOT gate}{
+\\
+\input not_normal
+\\~\\~\\~\\~\\~\\~\\~\\~\\
+\input not_reverse
+\\~\\~\\~\\~\\
+=SML
+fun NOT [0] = 1 |
+    NOT [1] = 0 |
+    NOT [_] = raise OutOfRange;
+map NOT (tv(1,(0,1)));
+map NOT (tv(1,(1,0)));
+=TEX
+}
+\btext{.05}{.10}{.125}{\Large \textsc{Normal}}
+\putfig{.05}{.23}{.50}{not_normal}
+\btext{.05}{.35}{.135}{\Large \textsc{Reverse}}
+\putfig{.05}{.48}{.50}{not_reverse}
+\putfig{.45}{.60}{.30}{not_gate}
+
+\normalpage{CS113 LAB 2: AND gate}{
+\\
+\input and_normal
+\\~\\~\\~\\~\\~\\~\\~\\~\\
+\input and_reverse
+\\~\\~\\~\\~\\
+=SML
+infix AND;
+fun 0 AND _ = 0 |
+    1 AND Q = Q |
+    _ AND _ = raise OutOfRange;
+fun pAND[P,Q] = P AND Q;
+map pAND (tv(2,(0,1)));
+map pAND (tv(2,(1,0)));
+=TEX
+}
+\btext{.05}{.10}{.125}{\Large \textsc{Normal}}
+\putfig{.05}{.27}{.50}{and_normal}
+\btext{.05}{.40}{.135}{\Large \textsc{Reverse}}
+\putfig{.05}{.57}{.50}{and_reverse}
+\putfig{.45}{.70}{.30}{and_gate}
+
+\normalpage{CS113 LAB 2: OR gate}{
+\\
+\input or_normal
+\\~\\~\\~\\~\\~\\~\\~\\~\\
+\input or_reverse
+\\~\\~\\~\\~\\
+=SML
+infix OR;
+fun 1 OR _ = 1 |
+    0 OR Q = Q |
+    _ OR _ = raise OutOfRange;
+fun pOR[P,Q] = P OR Q;
+map pOR (tv(2,(0,1)));
+map pOR (tv(2,(1,0)));
+=TEX
+}
+\btext{.05}{.10}{.125}{\Large \textsc{Normal}}
+\putfig{.05}{.27}{.50}{or_normal}
+\btext{.05}{.40}{.135}{\Large \textsc{Reverse}}
+\putfig{.05}{.57}{.50}{or_reverse}
+\putfig{.45}{.70}{.30}{or_gate}
+
+\normalpage{CS113 LAB 2: NAND gate}{
+\\
+\input nand_normal
+\\~\\~\\~\\~\\~\\~\\~\\~\\
+\input nand_reverse
+\\~\\~\\~\\~\\
+=SML
+infix NAND;
+fun P NAND Q = NOT [P AND Q];
+fun pNAND[P,Q] = P NAND Q;
+map pNAND (tv(2,(0,1)));
+map pNAND (tv(2,(1,0)));
+=TEX
+}
+\btext{.05}{.10}{.125}{\Large \textsc{Normal}}
+\putfig{.05}{.27}{.50}{nand_normal}
+\btext{.05}{.40}{.135}{\Large \textsc{Reverse}}
+\putfig{.05}{.57}{.50}{nand_reverse}
+\putfig{.45}{.70}{.30}{nand_gate}
+
+\normalpage{CS113 LAB 2: NOR gate}{
+\\
+\input nor_normal
+\\~\\~\\~\\~\\~\\~\\~\\~\\
+\input nor_reverse
+\\~\\~\\~\\~\\
+=SML
+infix NOR;
+fun P NOR Q = NOT [P OR Q];
+fun pNOR[P,Q] = P NOR Q;
+map pNOR (tv(2,(0,1)));
+map pNOR (tv(2,(1,0)));
+=TEX
+}
+\btext{.05}{.10}{.125}{\Large \textsc{Normal}}
+\putfig{.05}{.27}{.50}{nor_normal}
+\btext{.05}{.40}{.135}{\Large \textsc{Reverse}}
+\putfig{.05}{.57}{.50}{nor_reverse}
+\putfig{.45}{.70}{.30}{nor_gate}
+
+\normalpage{CS113 LAB 2: XOR gate}{
+\\
+\input xor_normal
+\\~\\~\\~\\~\\~\\~\\~\\~\\
+\input xor_reverse
+\\~\\~\\~\\~\\
+=SML
+infix XOR;
+fun 0 XOR Q = Q |
+    Q XOR 0 = Q |
+    1 XOR 1 = 0 |
+    _ XOR _ = raise OutOfRange;
+fun pXOR[P,Q] = P XOR Q;
+map pXOR (tv(2,(0,1)));
+map pXOR (tv(2,(1,0)));
+=TEX
+}
+\btext{.05}{.10}{.125}{\Large \textsc{Normal}}
+\putfig{.05}{.27}{.50}{xor_normal}
+\btext{.05}{.40}{.135}{\Large \textsc{Reverse}}
+\putfig{.05}{.57}{.50}{xor_reverse}
+\putfig{.45}{.70}{.30}{xor_gate}
+
+\normalpage{CS113 LAB 2: Example 2.2 \& 2.3}{
+\\
+\input ex2_normal
+\\~\\~\\~\\~\\~\\~\\
+\input ex2_reverse
+\\~\\~\\
+=SML
+fun ex2[P,Q,R] = (P OR Q) AND (P OR R);
+map ex2 (tv(3,(0,1)));
+map ex2 (tv(3,(1,0)));
+=TEX
+}
+\btext{.05}{.10}{.125}{\Large \textsc{Normal}}
+\putfig{.05}{.37}{.50}{ex2_normal}
+\btext{.05}{.44}{.135}{\Large \textsc{Reverse}}
+\putfig{.05}{.71}{.50}{ex2_reverse}
+\putfig{.60}{.65}{.30}{ex2_gate}
+\btext{.60}{.60}{.22}{\large P = 0, Q = 1, R = 0}
+
+\normalpage{CS113 LAB 2: Problem 2}{
+\\
+\input p2_normal
+\\~\\~\\~\\~\\~\\~\\
+\input p2_reverse
+\\~\\~\\
+=SML
+fun p2[P,Q,R] = (P AND Q) OR NOT [R];
+map p2 (tv(3,(0,1)));
+map p2 (tv(3,(1,0)));
+=TEX
+}
+\btext{.05}{.10}{.125}{\Large \textsc{Normal}}
+\putfig{.05}{.37}{.50}{p2_normal}
+\btext{.05}{.44}{.135}{\Large \textsc{Reverse}}
+\putfig{.05}{.71}{.50}{p2_reverse}
+\putfig{.60}{.65}{.30}{p2_gate}
+
+\normalpage{CS113 LAB 2: Problem 3}{
+\\
+\input p3_normal
+\\~\\~\\~\\~\\~\\~\\
+\input p3_reverse
+\\~\\~\\
+=SML
+fun p3[P,Q,R] = (P AND Q) AND NOT [R];
+map p3 (tv(3,(0,1)));
+map p3 (tv(3,(1,0)));
+=TEX
+}
+\btext{.05}{.10}{.125}{\Large \textsc{Normal}}
+\putfig{.05}{.37}{.50}{p3_normal}
+\btext{.05}{.44}{.135}{\Large \textsc{Reverse}}
+\putfig{.05}{.71}{.50}{p3_reverse}
+\putfig{.60}{.65}{.30}{p3_gate}
+
+\normalpage{CS113 LAB 2: Problem 7}{
+\\
+\input p7_normal
+\\~\\~\\~\\~\\~\\~\\
+\input p7_reverse
+\\~\\~\\
+=SML
+fun p7[A,B,S] = (A AND NOT [S]) OR (S AND B);
+map p7 (tv(3,(0,1)));
+map p7 (tv(3,(1,0)));
+=TEX
+}
+\btext{.05}{.10}{.125}{\Large \textsc{Normal}}
+\putfig{.05}{.37}{.50}{p7_normal}
+\btext{.05}{.44}{.135}{\Large \textsc{Reverse}}
+\putfig{.05}{.71}{.50}{p7_reverse}
+\putfig{.60}{.75}{.35}{p7_gate}
+
+\end{document}

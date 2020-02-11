@@ -1,0 +1,92 @@
+\documentclass{ffslides}
+\ffpage{60}{\numexpr 9/16}
+\usepackage{fancyvrb}
+\begin{document}
+\fvset{numbers=left,numbersep=3pt,frame=single,firstnumber=1,tabsize=4}
+\normalpage{Lab 2 - lab.h}{
+	\VerbatimInput[firstline=13,lastline=54]{../includes/lab.h}
+}
+\btext{.30}{.20}{.30}{\large Libraries:\\
+iostream: for for stdin/stdout via terminal\\
+fstream: for read/write file}
+\btext{.55}{.35}{.30}{\large Structs:\\
+Entry: for the array of words\\
+Node: for the linked list}
+
+\normalpage{Lab 2 - main.cpp}{
+	\VerbatimInput[firstline=13,lastline=54]{../srcs/main.cpp}
+}
+\btext{.50}{.30}{.40}{\large Main:\\
+In the main, there will be only communication part.\\
+Other works will be handled in separte functions.\\~\\
+First, the program will ask for the dictionary file\\
+name and then store the data into linked list\\
+(loadDictionary fun.)\\
+After that, it will ask for which words that users\\
+want to search.\\~\\
+If the word doesn't exist in the data,\\
+it will ask for creating a new word.\\
+If users create the word,\\
+then it will be stored into the file.\\
+It repeats the operations in a while loop until\\
+users hit ctrl+D.}
+
+\normalpage{Lab 2 - main.cpp}{
+	\VerbatimInput[firstline=55,lastline=96,firstnumber=43]{../srcs/main.cpp}
+}
+
+\normalpage{Lab 2 - insert.cpp}{
+	\VerbatimInput[firstline=13,lastline=50]{../srcs/insert.cpp}
+}
+\btext{.45}{.25}{.40}{\large insert:\\
+This function takes the head of a list and\\
+a content for a new node.\\
+It creates a new node with the content and place it\\
+at the front of the list (front of the head).\\
+it returns false when it fails to allocate memory}
+
+\normalpage{Lab 2 - loadDictionary.cpp}{
+	\VerbatimInput[firstline=13,lastline=50]{../srcs/loadDictionary.cpp}
+}
+\btext{.45}{.25}{.45}{\large loadDictionary:\\
+This function takes the head of a list and a file name.\\
+It will open, read the file, and store the data into the list.\\
+It returns false when it fails to open the file}
+
+\normalpage{Lab 2 - search.cpp}{
+	\VerbatimInput[firstline=13,lastline=50]{../srcs/search.cpp}
+}
+\btext{.45}{.25}{.40}{\large search:\\
+This function takes the head of a list and\\
+an Entry struct that contains what users want to find.\\
+It will iterate through the list and returns\\
+true and store the matching translation into the Entry.\\
+It returns false when it fails to find.}
+
+\normalpage{Lab 2 - add.cpp}{
+	\VerbatimInput[firstline=13,lastline=50]{../srcs/add.cpp}
+}
+\btext{.45}{.25}{.40}{\large add:\\
+This function takes a file name and an Entry.\\
+It will open the file and append the word and\\
+the translation in the Entry into the file.\\
+It returns false when it fails to open the file.}
+
+\normalpage{Lab 2 - destroyList.cpp}{
+	\VerbatimInput[firstline=13,lastline=50]{../srcs/destroyList.cpp}
+}
+\btext{.45}{.25}{.40}{\large destroyList:\\
+This function takes the head of a list.\\
+It will delete all the allocated nodes while\\
+iterating through the list.}
+
+\normalpage{Lab 1 - Result Screenshots}{
+}
+\btext{.05}{.11}{.15}{\Huge \textsc{Before}}
+\btext{.375}{.11}{.15}{\Huge \textsc{Result}}
+\putfig{.05}{.15}{.30}{before}
+\putfig{.375}{.15}{.60}{result}
+\btext{.05}{.46}{.15}{\Huge \textsc{After}}
+\putfig{.05}{.50}{.30}{after}
+
+\end{document}

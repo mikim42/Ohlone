@@ -1,0 +1,329 @@
+% **************************************************************************** %
+%                                                                              %
+%                                                         :::      ::::::::    %
+%    lab.tex                                            :+:      :+:    :+:    %
+%                                                     +:+ +:+         +:+      %
+%    By: mikim <mikim@student.42.us.org>            +#+  +:+       +#+         %
+%                                                 +#+#+#+#+#+   +#+            %
+%    Created: 2018/04/07 16:04:36 by mikim             #+#    #+#              %
+%    Updated: 2018/04/07 17:54:15 by mikim            ###   ########.fr        %
+%                                                                              %
+% **************************************************************************** %
+
+% **************************************************************************** %
+%                                                               Mingyun Kim    %
+%                                            https://www.github.com/mikim42    %
+% **************************************************************************** %
+
+\documentclass{ffslides}
+\ffpage{25}{\numexpr 16/9}
+\usepackage{fancyvrb}
+\usepackage{listings}
+\usepackage{color}
+\begin{document}
+\lstset{language=C++,
+	basicstyle=\ttfamily,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{green}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#},
+	numbers=left, numbersep=4pt, frame=single, firstnumber=1, tabsize=4
+}
+\fvset{numbers=left, numbersep=3pt, frame=single, firstnumber=1, tabsize=4}
+
+
+\normalpage{Lab 4 - lab.h}{
+	\lstinputlisting[firstline=21, lastline=32]{../includes/lab.h}
+}
+\btext{.40}{.175}{.50}{\large
+	\qi{\Large Libraries:}
+	\qii{string: std::string}
+	\qii{cairo, config, FL/Fl\_Cairo\_Window:\\
+	cairo graphic library}
+	\qii{car: car struct}
+	\qii{person: person struct}
+	\qii{drive: drive struct for moving animation}
+	\qii{llqueue: linked list queue class}
+	\qii{rbqueue: ring buffer queue class}
+}
+\normalpage{Lab 4 - lab.h}{
+	\lstinputlisting[firstline=33, lastline=41]{../includes/lab.h}
+}
+\btext{.05}{.55}{.50}{\large
+	\qi{\Large Global const variables:}
+	\qii{CAR\_PATH, PERSON\_PATH:\\
+	path to the directories}
+	\qii{PNG: png file format extension}
+	\qii{WIDTH, HEIGHT: the sizes for the cairo window}
+	\qii{MAX\_CAR: the number of cars}
+	\qii{DEST\_X, DEST\_Y: x,y of destination (driving)}
+}
+\normalpage{Lab 4 - lab.h}{
+	\lstinputlisting[firstline=42, lastline=48]{../includes/lab.h}
+}
+\btext{.05}{.50}{.25}{
+	\qi{\Large Function prototypes}
+}
+\normalpage{Lab 4 - lab.h}{
+	\lstinputlisting[firstline=50]{../includes/lab.h}
+}
+\btext{.05}{.50}{.20}{
+	\qi{\Large Extern variables}
+}
+
+
+\normalpage{Lab 4 - car.h}{
+	\lstinputlisting[firstline=18]{../includes/car.h}
+}
+\btext{.50}{.20}{.40}{\large
+	\qi{\Large struct Car:}
+	\qii{it holds the information of cars}
+	\qii{x,y positions and the image data}
+}
+
+
+\normalpage{Lab 4 - person.h}{
+	\lstinputlisting[firstline=18]{../includes/person.h}
+}
+\btext{.50}{.20}{.40}{\large
+	\qi{\Large struct Person:}
+	\qii{it holds the information of people}
+	\qii{x,y positions and the image data}
+}
+
+
+\normalpage{Lab 4 - drive.h}{
+	\lstinputlisting[firstline=18, lastline=36]{../includes/drive.h}
+}
+\btext{.40}{.20}{.50}{\large
+	\qi{\Large struct DRIVE:}
+	\qii{it takes struct Car and Person}
+	\qii{and holds the information of driving animation}
+}
+
+
+\normalpage{Lab 4 - llqueue.h}{
+	\lstinputlisting[firstline=23, lastline=28]{../includes/llqueue.h}
+}
+\btext{.40}{.20}{.50}{\large
+	\qi{\Large struct NODE:}
+	\qii{the node for the linked list}
+}
+\normalpage{Lab 4 - llqueue.h}{
+	\lstinputlisting[firstline=29, lastline=43]{../includes/llqueue.h}
+}
+\btext{.40}{.20}{.50}{\large
+	\qi{\Large class LLQUEUE:}
+	\qii{linked list queue for cars}
+}
+
+
+\normalpage{Lab 4 - llqueue.cpp}{
+	\lstinputlisting[firstline=20, lastline=36]{../srcs/llqueue.cpp}
+}
+\btext{.40}{.20}{.50}{\large
+	\qi{\Large member functions of class LLQUEUE}
+	\qi{constructor and destructor}
+	\qii{destructor frees out all the allocated nodes}
+}
+\normalpage{Lab 4 - llqueue.cpp}{
+	\lstinputlisting[firstline=38, lastline=54]{../srcs/llqueue.cpp}
+}
+\btext{.40}{.20}{.50}{\large
+	\qi{Insert}
+	\qii{it takes a new car object and puts in a newly allocated node}
+	\qii{Then, adds the node to the linked list}
+}
+\normalpage{Lab 4 - llqueue.cpp}{
+	\lstinputlisting[firstline=56, lastline=70]{../srcs/llqueue.cpp}
+}
+\btext{.40}{.20}{.50}{\large
+	\qi{Remove}
+	\qii{it removes the front node from the linked list\\
+		and frees out the memory}
+	\qii{Returns the item of the node}
+}
+\normalpage{Lab 4 - llqueue.cpp}{
+	\lstinputlisting[firstline=71, lastline=75]{../srcs/llqueue.cpp}
+}
+\btext{.40}{.20}{.50}{\large
+	\qi{isEmpty}
+	\qii{it checks if the list is empty or not}
+}
+\normalpage{Lab 4 - llqueue.cpp}{
+	\lstinputlisting[firstline=76, lastline=83]{../srcs/llqueue.cpp}
+}
+\btext{.05}{.55}{.50}{\large
+	\qi{draw\_cars}
+	\qii{it draws cars on the cairo window}
+}
+
+
+\normalpage{Lab 4 - rbqueue.h}{
+	\lstinputlisting[firstline=23, lastline=33]{../includes/rbqueue.h}
+}
+\btext{.40}{.20}{.50}{\large
+	\qi{\Large class RBQUEUE:}
+	\qii{ring buffer queue for people}
+}
+\normalpage{Lab 4 - rbqueue.h}{
+	\lstinputlisting[firstline=34, lastline=43]{../includes/rbqueue.h}
+}
+
+
+\normalpage{Lab 4 - rbqueue.cpp}{
+	\lstinputlisting[firstline=20, lastline=31]{../srcs/rbqueue.cpp}
+}
+\btext{.40}{.20}{.50}{\large
+	\qi{\Large member functions of class RBQUEUE}
+	\qi{constructor and destructor}
+	\qii{destructor deletes all the cairo surfaces}
+}
+\normalpage{Lab 4 - rbqueue.cpp}{
+	\lstinputlisting[firstline=33, lastline=38]{../srcs/rbqueue.cpp}
+}
+\btext{.40}{.25}{.50}{\large
+	\qi{nextIndex}
+	\qii{it returns the next index of the ring buffer queue}
+}
+\normalpage{Lab 4 - rbqueue.cpp}{
+	\lstinputlisting[firstline=40, lastline=47]{../srcs/rbqueue.cpp}
+}
+\btext{.40}{.20}{.50}{\large
+	\qi{Insert}
+	\qii{it takes a person struct and puts into the next buf}
+	\qii{if the buf is full, then returns false}
+}
+\normalpage{Lab 4 - rbqueue.cpp}{
+	\lstinputlisting[firstline=49, lastline=56]{../srcs/rbqueue.cpp}
+}
+\btext{.50}{.20}{.40}{\large
+	\qi{Remove}
+	\qii{it removes the front item and returns it}
+}
+\normalpage{Lab 4 - rbqueue.cpp}{
+	\lstinputlisting[firstline=58, lastline=61]{../srcs/rbqueue.cpp}
+}
+\btext{.40}{.20}{.50}{\large
+	\qi{isEmpty}
+	\qii{it checks if the buf is empty or not}
+}
+\normalpage{Lab 4 - rbqueue.cpp}{
+	\lstinputlisting[firstline=62, lastline=65]{../srcs/rbqueue.cpp}
+}
+\btext{.55}{.20}{.35}{\large
+	\qi{isFull}
+	\qii{it checks if the buf if full or not}
+}
+\normalpage{Lab 4 - rbqueue.cpp}{
+	\lstinputlisting[firstline=67]{../srcs/rbqueue.cpp}
+}
+\btext{.05}{.60}{.50}{\large
+	\qi{draw\_people}
+	\qii{it draws the people on the cairo window}
+}
+
+
+\normalpage{Lab 4 - main.cpp}{
+	\lstinputlisting[firstline=20]{../srcs/main.cpp}
+}
+\btext{.45}{.20}{.45}{\large
+	\qi{\Large main.cpp}
+	\qii{srand resets the rand() function}
+	\qii{it creates the cairo window,\\
+		loads cars, and adds drawing\\
+		callback functions}
+	\qii{arrive\_cb will be called every 2 seconds}
+	\qii{draw\_cb will be called every 0.1 second}
+}
+
+
+\normalpage{Lab 4 - load\_cars.cpp}{
+	\lstinputlisting[firstline=20]{../srcs/load_cars.cpp}
+}
+\btext{.45}{.20}{.45}{\large
+	\qi{\Large load\_cars.cpp}
+	\qii{loads car images to car structs and\\
+		inserts into the linked list queue}
+	\qii{it sets the x,y position of cars}
+}
+
+
+\normalpage{Lab 4 - draw\_cb.cpp}{
+	\lstinputlisting[firstline=20]{../srcs/draw_cb.cpp}
+}
+\btext{.50}{.30}{.40}{\large
+	\qi{\Large draw\_cb.cpp}
+	\qii{it draws background, cars, and people}
+	\qii{if drive.move is true, it calls\\
+		draw\_drive function}
+	\qii{if all cars are gone, it removes\\
+		this callback to stop drawing}
+}
+
+
+\normalpage{Lab 4 - draw\_background.cpp}{
+	\lstinputlisting[firstline=20]{../srcs/draw_background.cpp}
+}
+\btext{.40}{.67}{.45}{\large
+	\qi{\Large draw\_background.cpp}
+	\qii{it draws background}
+	\qii{cairo\_surface\_destroy deletes loaded image\\
+		after drawing}
+}
+
+
+\normalpage{Lab 4 - load\_drive.cpp}{
+	\lstinputlisting[firstline=20]{../srcs/load_drive.cpp}
+}
+\btext{.05}{.65}{.75}{\large
+	\qi{\Large load\_drive.cpp}
+	\qii{it takes a car and a person and sets the start position}
+	\qii{if there's no car or no person, then it does nothing}
+}
+
+
+\normalpage{Lab 4 - draw\_drive.cpp}{
+	\lstinputlisting[firstline=20, lastline=34]{../srcs/draw_drive.cpp}
+}
+\normalpage{Lab 4 - draw\_drive.cpp}{
+	\lstinputlisting[firstline=35]{../srcs/draw_drive.cpp}
+}
+\btext{.05}{.50}{.75}{\large
+	\qi{\Large draw\_drive.cpp}
+	\qii{it draws the driving animation}
+	\qii{it draws the car and the person and updates x,y position}
+	\qii{2\% of the total distance is added every time}
+	\qiii{(from the start to the destination)}
+	\qii{if it arrives the destination, then deletes it}
+}
+
+
+\normalpage{Lab 4 - arrive\_cb.cpp}{
+	\lstinputlisting[firstline=20, lastline=33]{../srcs/arrive_cb.cpp}
+}
+\normalpage{Lab 4 - arrive\_cb.cpp}{
+	\lstinputlisting[firstline=34]{../srcs/arrive_cb.cpp}
+}
+\btext{.05}{.50}{.75}{\large
+	\qi{\Large arrive\_cb.cpp}
+	\qii{it loads people}
+	\qii{it places people on random place using rand()}
+	\qii{resets callback time using rand()}
+	\qii{it creates people the number of MAX\_CAR}
+}
+
+
+\normalpage{Lab 4 - redraw\_cb.cpp}{
+	\lstinputlisting[firstline=20]{../srcs/redraw_cb.cpp}
+}
+\btext{.05}{.50}{.75}{\large
+	\qi{\Large redraw\_cb.cpp}
+	\qii{this callback calls redraw every 0.1 second}
+	\qii{redraw function calls the main drawing function,\\
+		which is draw\_cb}
+	\qiii{set by set\_draw\_cb function in the main}
+}
+
+
+\end{document}

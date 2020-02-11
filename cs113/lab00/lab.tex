@@ -1,0 +1,30 @@
+\def\VCDate{2018/01/25}\def\VCVersion{(Current)}
+\documentclass{ffslides}
+\ffpage{25}{\numexpr 16/9}
+\usepackage{ProofPower}
+\begin{document}
+\obeyspaces
+
+\normalpage{cs113 Lab0}{
+\input con
+example 1.3
+let
+	\[p: 5 < 9\]
+	\[q: 9 < 7\]
+
+Construct the propostions $p \land q$ and $p \lor q$.
+
+Documentation goes here ...
+Code goes here too ...
+\begin{GFT}{SML}
+\+"Example 1.3";\\
+\+val p = 2+3 < 6;\\
+\+val q = 9 < 7;\\
+\+infix AND;\\
+\+fun p AND q = p andalso q;\\
+\+p AND q;\\
+\end{GFT}
+}
+\putfig{.45}{.3}{.42}{fig1}
+\end{document}
+

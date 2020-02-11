@@ -1,0 +1,150 @@
+=TEX
+\documentclass{ffslides}
+\ffpage{42}{\numexpr 16/9}
+\usepackage{ProofPower,amsmath}
+\begin{document}
+\obeyspaces
+
+\normalpage{CS113 LAB 3 - Example 3.3}{
+Example 3.3\\
+Show that $\sim (p \rightarrow q) \equiv p \land (\sim q)$\\
+\input ex3
+\begin{align}
+ \sim (p \rightarrow q) & \equiv \sim (\sim p \lor q)          \tag{Conditional} \\
+                        & \equiv \sim (\sim p) \land (\sim q)  \tag{De Morgan's} \\
+                        & \equiv p \land (\sim q) \, °         \tag{Double Negation} 
+\end{align}
+=SML
+val L0 = asm_rule ¬ ³(p ´ q) ®;
+val T = ¬ ³(p ´ q) ¤ ³(³p ² q) ®;
+val conditional = prove_rule [ ] T;
+val L1 = rewrite_rule [conditional] L0;
+rewrite_rule [³_²_thm] L1;
+=TEX
+}
+\btext{.05}{.32}{.35}{Notice that ProofPower automatically applied the double-negation rule}
+\putfig{.05}{.65}{.50}{ex3}
+
+\normalpage{CS113 LAB 3 - Example 3.5}{
+Example 3.5\\
+Show that $p \rightarrow q \equiv \sim q \rightarrow \sim p$ \\
+\input ex5
+\begin{align}
+ p \rightarrow q & \equiv (\sim p) \lor q		 \tag{Conditional}\\
+		 & \equiv \sim [p \land (\sim q)]	 \tag{De Morgan's}\\
+		 & \equiv \sim [(\sim q) \land p]	 \tag{Commutative}\\
+		 & \equiv [\sim (\sim q)] \lor (\sim p)  \tag{De Morgan's}\\
+		 & \equiv q \lor (\sim p)		 \tag{Double Negation}\\
+		 & \equiv \sim q \rightarrow \sim p \, ° \tag{Conditional}
+\end{align}
+=SML
+val L0 = asm_rule ¬ p ´ q ®;
+val L1 = rewrite_rule [´_thm] L0;
+val T = ¬ ³p ² q ¤ ³(p ± ³q) ®;
+val demorgan = prove_rule [ ] T;
+val L2 = rewrite_rule [demorgan] L1;
+val T = ¬ p ± ³q ¤ ³q ± p ®;
+val commutative = prove_rule [ ] T;
+val L3 = rewrite_rule [commutative] L2;
+val L4 = rewrite_rule [³_±_thm] L3;
+val T = ¬ q ² ³p ¤ ³q ´ ³p ®;
+val conditional = prove_rule [ ] T;
+rewrite_rule [conditional] L4;
+=TEX
+}
+\btext{.05}{.32}{.35}{Notice that ProofPower automatically applied conditional rule and double-negation rule}
+\putfig{.30}{.60}{.35}{ex5}
+
+\normalpage{CS113 LAB 3 - Problem 3.8}{
+Problem 3.8\\
+Show that $\sim (p \leftrightarrow q) \equiv (p \land \sim q) \lor (\sim p \land q)$\\
+\input{p8}
+\begin{align}
+ \sim (p \leftrightarrow q) & \equiv \sim[(p \rightarrow q) \land (q \rightarrow p)]
+			      \tag{Biconditional}\\
+			    & \equiv [\sim(p \rightarrow q)] \lor [\sim (q \rightarrow p)]
+			      \tag{De Morgan's}\\
+			    & \equiv (p \land \sim q) \lor (\sim p \land q) \, °
+			      \tag{Conditional}
+\end{align}
+=SML
+val L0 = asm_rule ¬ ³(p ¤ q) ®;
+val L1 = rewrite_rule [¤_thm] L0;
+val T = ¬ ³((p ´ q) ± (q ´ p)) ¤ (³(p ´ q)) ² (³(q ´ p)) ®;
+val demorgan = prove_rule [ ] T;
+val L2 = rewrite_rule [demorgan] L1;
+rewrite_rule [³_´_thm] L2;
+=TEX
+}
+\btext{.05}{.32}{.35}{Notice that ProofPower automatically applied biconditional rule}
+\putfig{.05}{.65}{.50}{p8}
+
+\normalpage{CS113 LAB 3 - Problem 3.11}{
+Problem 3.11\\
+Show using a chain of logical equivalences that $(p \rightarrow r) \land (q \rightarrow r) \equiv (p \lor q) \rightarrow r$\\
+\input{p11}
+\begin{align}
+(p \land q) \rightarrow r & \equiv [\sim (p \lor q)] \lor r						   \tag{Conditional}\\
+			  & \equiv [(\sim p) \land (\sim q)] \lor r 					   \tag{De Morgan's}\\
+			  & \equiv [\sim p \lor r] \land [(\sim q)] \lor r				   \tag{Distributive}\\
+			  & \equiv (p \rightarrow r) \land (q \rightarrow r) \, °			   \tag{Conditional}
+\end{align}
+=SML
+val L0 = asm_rule ¬ ³(p ¤ q) ®;
+val L1 = rewrite_rule [¤_thm] L0;
+val T = ¬ ³((p ´ q) ± (q ´ p)) ¤ (³(p ´ q)) ² (³(q ´ p)) ®;
+val demorgan = prove_rule [ ] T;
+val L2 = rewrite_rule [demorgan] L1; 
+val L3 = rewrite_rule [³_´_thm] L2;
+=TEX
+}
+\btext{.05}{.45}{.35}{Notice that ProofPower automatically applied biconditional rule and conditional rule}
+\putfig{.05}{.77}{.40}{p11}
+
+\normalpage{CS113 LAB 3 - Problem 3.12}{
+Problem 3.12\\
+Show using a chain of logical equivalences that $p \leftrightarrow q \equiv (p \land q) \lor (\sim p \land \sim q)$\\
+\input{p12}
+\begin{align}
+p \leftrightarrow q & \equiv (p \rightarrow q) \land (q \rightarrow p)
+		      \tag{Biconditional}\\
+		    & \equiv (\sim p \lor q) \land (\sim q \lor p)
+		      \tag{Conditional}\\
+		    & \equiv [\sim p \land (\sim q \lor p)] \lor [q \land (\sim q \lor p)]
+		      \tag{Distributive OR}\\
+		    & \equiv [(\sim p \land \sim q) \lor (\sim p \land p)] \lor [(q \land \sim 				     q) \lor (q \land p)]
+		      \tag{Distributive AND}\\
+		    & \equiv [(\sim p \land \sim q) \lor c] \lor [c \lor (q \land p)]
+		      \tag{Contradiction}\\
+		    & \equiv (\sim p \land \sim q) \lor (p \land q)
+		      \tag{Identity}\\
+		    & \equiv (p \land q) \lor (\sim p \land \sim q) \, °
+		      \tag{Commutative}
+\end{align}
+}
+\btext{.05}{.32}{.30}{Notice that ProofPower automatically applied biconditional rule and conditional rule}
+
+\normalpage{CS113 LAB 3 - Problem 3.12}{
+=SML
+val L0 = asm_rule ¬ (p ¤ q) ®;
+val L1 = rewrite_rule [¤_thm] L0;
+val L2 = rewrite_rule [´_thm] L1;
+val T = ¬ (³p ² q) ± (³q ² p) ¤ (³p ± (³q ² p)) ² (q ± (³q ² p)) ®;
+val distributiveOR = prove_rule [ ] T;
+val L3 = rewrite_rule [distributiveOR] L2;
+val T = ¬ (³p ± (³q ² p)) ² (q ± (³q ² p)) ¤ ((³p ± ³q) ² (³p ± p)) ² ((q ± ³q) ² (q ± p)) ®;
+val distributiveAND = prove_rule [ ] T;
+val L4 = rewrite_rule [distributiveAND] L3;
+val T = ¬ ((³p ± ³q) ² (³p ± p)) ² ((q ± ³q) ² (q ± p)) ¤ ((³p ± ³q) ² F) ² (F ² (q ± p)) ®;
+val contradiction = prove_rule [ ] T;
+val L5 = rewrite_rule [contradiction] L4;
+val T = ¬ (³p ± ³q) ² (q ± p) ¤ (p ± q) ² (³p ± ³q) ®;
+val commutative = prove_rule [ ] T;
+val L6 = rewrite_rule [commutative] L5;
+=TEX
+}
+
+\normalpage{CS113 LAB 3 - Problem 3.12}{}
+\putfig{.05}{.15}{.70}{p12}
+
+\end{document}

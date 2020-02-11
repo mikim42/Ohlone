@@ -1,0 +1,121 @@
+\def\VCDate{2018/02/01}\def\VCVersion{(Current)}
+\documentclass{ffslides}
+\ffpage{25}{\numexpr 16/9}
+\usepackage{ProofPower}
+\begin{document}
+\obeyspaces
+
+\normalpage{cs113 Lab1: slide 1}{
+\begin{GFT}{SML}
+\+datatype Boolean = F | T;\\
+\+val truth\_values = [(F,F),(F,T),(T,F),(T,T)];\\
+\end{GFT}
+}
+
+\normalpage{cs113 Lab1: slide 2}{
+ttgen table \\
+\input conjunction
+\begin{GFT}{SML}
+\+fun conjunction(F,\_) = F\\
+\+   | conjunction(T,q) = q;\\
+\+map conjunction truth\_values;\\
+\end{GFT}
+}
+\putfig{.05}{.60}{.8}{slide2}
+
+\normalpage{cs113 Lab1: slide 3}{
+ttgen table \\
+\input disjunction
+\begin{GFT}{SML}
+\+fun disjunction(F,q) = q\\
+\+   | disjunction(T,\_) = T;\\
+\+map disjunction truth\_values;\\
+\end{GFT}
+}
+\putfig{.05}{.60}{.8}{slide3}
+
+\normalpage{cs113 Lab1: slide 4}{
+ttgen table \\
+\input exclusive_or
+\begin{GFT}{SML}
+\+fun exclusive\_or(F,F) = F\\
+\+   | exclusive\_or(F,T) = T\\
+\+   | exclusive\_or(T,F) = T\\
+\+   | exclusive\_or(T,T) = F;\\
+\+map exclusive\_or truth\_values;\\
+\end{GFT}
+}
+\putfig{.05}{.70}{.8}{slide4}
+
+\normalpage{cs113 Lab1: slide 5}{
+ttgen table \\
+\input negation
+\begin{GFT}{SML}
+\+val truth\_values\_negation = [(F),(T)];\\
+\+fun negation(F) = T\\
+\+   | negation(T) = F;\\
+\+map negation truth\_values\_negation;\\
+\end{GFT}
+}
+\putfig{.05}{.60}{.8}{slide5}
+
+\normalpage{cs113 Lab1: slide 6}{
+ttgen table \\
+\input p18
+\begin{GFT}{SML}
+\+fun equivalence(F,F) = T\\
+\+   | equivalence(F,T) = F\\
+\+   | equivalence(T,F) = F\\
+\+   | equivalence(T,T) = T;\\
+\+fun problem18(p,q) = equivalence(exclusive\_or(p,q), conjunction(disjunction(p,q), negation(conjunction(p,q))));\\
+\+map problem18 truth\_values;\\
+\end{GFT}
+}
+\putfig{.05}{.75}{.7}{slide6}
+
+\normalpage{cs113 Lab1: slide 7}{
+ttgen table \\
+\input p9
+\begin{GFT}{SML}
+\+val p = "The dollar is at an all-time high";\\
+\+val q = "the stock market is at a record low";\\
+\+fun problem9(p,q) = equivalence(negation(disjunction(p,q)),conjunction(negation(p),negation(q)));\\
+\+map problem9 truth\_values;\\
+\end{GFT}
+}
+\putfig{.05}{.65}{.8}{slide7}
+
+\normalpage{cs113 Lab1: slide 8}{
+ttgen table \\
+\input p10
+\begin{GFT}{SML}
+\+val p = "-5 < x";\\
+\+val q = "x <= 0";\\
+\+fun problem10(p,q) = equivalence(negation(conjunction(p,q)),disjunction(negation(p),negation(q)));\\
+\+map problem10 truth\_values;\\
+\end{GFT}
+}
+\putfig{.05}{.65}{.8}{slide8}
+
+\normalpage{cs113 Lab1: slide 9}{
+ttgen table \\
+\input p12
+\begin{GFT}{SML}
+\+fun problem12(p,q) =conjunction(conjunction(p,negation(q)),disjunction(negation(p),q));\\
+\+map problem12 truth\_values;\\
+\end{GFT}
+}
+\putfig{.05}{.6}{.8}{slide9}
+
+
+\normalpage{cs113 Lab1: slide 10}{
+ttgen table \\
+\input p13
+\begin{GFT}{SML}
+\+val truth\_values = [(F,F,F),(F,F,T),(F,T,F),(F,T,T),(T,F,F),(T,F,T),(T,T,F),(T,T,T)];\\
+\+fun problem13(p,q,r) = equivalence(conjunction(exclusive\_or(p,q),r),exclusive\_or(conjunction(p,r),conjunction(q,r)));\\
+\+map problem13 truth\_values;\\
+\end{GFT}
+}
+\putfig{.05}{.75}{.8}{slide10}
+\end{document}

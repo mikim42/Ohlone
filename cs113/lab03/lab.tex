@@ -1,0 +1,151 @@
+\def\VCDate{2018/03/04}\def\VCVersion{74613b4}
+\documentclass{ffslides}
+\ffpage{42}{\numexpr 16/9}
+\usepackage{ProofPower,amsmath}
+\begin{document}
+\obeyspaces
+
+\normalpage{CS113 LAB 3 - Example 3.3}{
+Example 3.3\\
+Show that $\sim (p \rightarrow q) \equiv p \land (\sim q)$\\
+\input ex3
+\begin{align}
+ \sim (p \rightarrow q) & \equiv \sim (\sim p \lor q)          \tag{Conditional} \\
+                        & \equiv \sim (\sim p) \land (\sim q)  \tag{De Morgan's} \\
+                        & \equiv p \land (\sim q) \, \PrLA{}         \tag{Double Negation} 
+\end{align}
+\begin{GFT}{SML}
+\+val L0 = asm\_rule \PrKM{} \PrLD{}(p \PrLE{} q) \PrKO{};\\
+\+val T = \PrKM{} \PrLD{}(p \PrLE{} q) \PrKE{} \PrLD{}(\PrLD{}p \PrLC{} q) \PrKO{};\\
+\+val conditional = prove\_rule [ ] T;\\
+\+val L1 = rewrite\_rule [conditional] L0;\\
+\+rewrite\_rule [\PrLD{}\_\PrLC{}\_thm] L1;\\
+\end{GFT}
+}
+\btext{.05}{.32}{.35}{Notice that ProofPower automatically applied the double-negation rule}
+\putfig{.05}{.65}{.50}{ex3}
+
+\normalpage{CS113 LAB 3 - Example 3.5}{
+Example 3.5\\
+Show that $p \rightarrow q \equiv \sim q \rightarrow \sim p$ \\
+\input ex5
+\begin{align}
+ p \rightarrow q & \equiv (\sim p) \lor q		 \tag{Conditional}\\
+		 & \equiv \sim [p \land (\sim q)]	 \tag{De Morgan's}\\
+		 & \equiv \sim [(\sim q) \land p]	 \tag{Commutative}\\
+		 & \equiv [\sim (\sim q)] \lor (\sim p)  \tag{De Morgan's}\\
+		 & \equiv q \lor (\sim p)		 \tag{Double Negation}\\
+		 & \equiv \sim q \rightarrow \sim p \, \PrLA{} \tag{Conditional}
+\end{align}
+\begin{GFT}{SML}
+\+val L0 = asm\_rule \PrKM{} p \PrLE{} q \PrKO{};\\
+\+val L1 = rewrite\_rule [\PrLE{}\_thm] L0;\\
+\+val T = \PrKM{} \PrLD{}p \PrLC{} q \PrKE{} \PrLD{}(p \PrLB{} \PrLD{}q) \PrKO{};\\
+\+val demorgan = prove\_rule [ ] T;\\
+\+val L2 = rewrite\_rule [demorgan] L1;\\
+\+val T = \PrKM{} p \PrLB{} \PrLD{}q \PrKE{} \PrLD{}q \PrLB{} p \PrKO{};\\
+\+val commutative = prove\_rule [ ] T;\\
+\+val L3 = rewrite\_rule [commutative] L2;\\
+\+val L4 = rewrite\_rule [\PrLD{}\_\PrLB{}\_thm] L3;\\
+\+val T = \PrKM{} q \PrLC{} \PrLD{}p \PrKE{} \PrLD{}q \PrLE{} \PrLD{}p \PrKO{};\\
+\+val conditional = prove\_rule [ ] T;\\
+\+rewrite\_rule [conditional] L4;\\
+\end{GFT}
+}
+\btext{.05}{.32}{.35}{Notice that ProofPower automatically applied conditional rule and double-negation rule}
+\putfig{.30}{.60}{.35}{ex5}
+
+\normalpage{CS113 LAB 3 - Problem 3.8}{
+Problem 3.8\\
+Show that $\sim (p \leftrightarrow q) \equiv (p \land \sim q) \lor (\sim p \land q)$\\
+\input{p8}
+\begin{align}
+ \sim (p \leftrightarrow q) & \equiv \sim[(p \rightarrow q) \land (q \rightarrow p)]
+			      \tag{Biconditional}\\
+			    & \equiv [\sim(p \rightarrow q)] \lor [\sim (q \rightarrow p)]
+			      \tag{De Morgan's}\\
+			    & \equiv (p \land \sim q) \lor (\sim p \land q) \, \PrLA{}
+			      \tag{Conditional}
+\end{align}
+\begin{GFT}{SML}
+\+val L0 = asm\_rule \PrKM{} \PrLD{}(p \PrKE{} q) \PrKO{};\\
+\+val L1 = rewrite\_rule [\PrKE{}\_thm] L0;\\
+\+val T = \PrKM{} \PrLD{}((p \PrLE{} q) \PrLB{} (q \PrLE{} p)) \PrKE{} (\PrLD{}(p \PrLE{} q)) \PrLC{} (\PrLD{}(q \PrLE{} p)) \PrKO{};\\
+\+val demorgan = prove\_rule [ ] T;\\
+\+val L2 = rewrite\_rule [demorgan] L1;\\
+\+rewrite\_rule [\PrLD{}\_\PrLE{}\_thm] L2;\\
+\end{GFT}
+}
+\btext{.05}{.32}{.35}{Notice that ProofPower automatically applied biconditional rule}
+\putfig{.05}{.65}{.50}{p8}
+
+\normalpage{CS113 LAB 3 - Problem 3.11}{
+Problem 3.11\\
+Show using a chain of logical equivalences that $(p \rightarrow r) \land (q \rightarrow r) \equiv (p \lor q) \rightarrow r$\\
+\input{p11}
+\begin{align}
+(p \land q) \rightarrow r & \equiv [\sim (p \lor q)] \lor r						   \tag{Conditional}\\
+			  & \equiv [(\sim p) \land (\sim q)] \lor r 					   \tag{De Morgan's}\\
+			  & \equiv [\sim p \lor r] \land [(\sim q)] \lor r				   \tag{Distributive}\\
+			  & \equiv (p \rightarrow r) \land (q \rightarrow r) \, \PrLA{}			   \tag{Conditional}
+\end{align}
+\begin{GFT}{SML}
+\+val L0 = asm\_rule \PrKM{} \PrLD{}(p \PrKE{} q) \PrKO{};\\
+\+val L1 = rewrite\_rule [\PrKE{}\_thm] L0;\\
+\+val T = \PrKM{} \PrLD{}((p \PrLE{} q) \PrLB{} (q \PrLE{} p)) \PrKE{} (\PrLD{}(p \PrLE{} q)) \PrLC{} (\PrLD{}(q \PrLE{} p)) \PrKO{};\\
+\+val demorgan = prove\_rule [ ] T;\\
+\+val L2 = rewrite\_rule [demorgan] L1; \\
+\+val L3 = rewrite\_rule [\PrLD{}\_\PrLE{}\_thm] L2;\\
+\end{GFT}
+}
+\btext{.05}{.45}{.35}{Notice that ProofPower automatically applied biconditional rule and conditional rule}
+\putfig{.05}{.77}{.40}{p11}
+
+\normalpage{CS113 LAB 3 - Problem 3.12}{
+Problem 3.12\\
+Show using a chain of logical equivalences that $p \leftrightarrow q \equiv (p \land q) \lor (\sim p \land \sim q)$\\
+\input{p12}
+\begin{align}
+p \leftrightarrow q & \equiv (p \rightarrow q) \land (q \rightarrow p)
+		      \tag{Biconditional}\\
+		    & \equiv (\sim p \lor q) \land (\sim q \lor p)
+		      \tag{Conditional}\\
+		    & \equiv [\sim p \land (\sim q \lor p)] \lor [q \land (\sim q \lor p)]
+		      \tag{Distributive OR}\\
+		    & \equiv [(\sim p \land \sim q) \lor (\sim p \land p)] \lor [(q \land \sim 				     q) \lor (q \land p)]
+		      \tag{Distributive AND}\\
+		    & \equiv [(\sim p \land \sim q) \lor c] \lor [c \lor (q \land p)]
+		      \tag{Contradiction}\\
+		    & \equiv (\sim p \land \sim q) \lor (p \land q)
+		      \tag{Identity}\\
+		    & \equiv (p \land q) \lor (\sim p \land \sim q) \, \PrLA{}
+		      \tag{Commutative}
+\end{align}
+}
+\btext{.05}{.32}{.30}{Notice that ProofPower automatically applied biconditional rule and conditional rule}
+
+\normalpage{CS113 LAB 3 - Problem 3.12}{
+\begin{GFT}{SML}
+\+val L0 = asm\_rule \PrKM{} (p \PrKE{} q) \PrKO{};\\
+\+val L1 = rewrite\_rule [\PrKE{}\_thm] L0;\\
+\+val L2 = rewrite\_rule [\PrLE{}\_thm] L1;\\
+\+val T = \PrKM{} (\PrLD{}p \PrLC{} q) \PrLB{} (\PrLD{}q \PrLC{} p) \PrKE{} (\PrLD{}p \PrLB{} (\PrLD{}q \PrLC{} p)) \PrLC{} (q \PrLB{} (\PrLD{}q \PrLC{} p)) \PrKO{};\\
+\+val distributiveOR = prove\_rule [ ] T;\\
+\+val L3 = rewrite\_rule [distributiveOR] L2;\\
+\+val T = \PrKM{} (\PrLD{}p \PrLB{} (\PrLD{}q \PrLC{} p)) \PrLC{} (q \PrLB{} (\PrLD{}q \PrLC{} p)) \PrKE{} ((\PrLD{}p \PrLB{} \PrLD{}q) \PrLC{} (\PrLD{}p \PrLB{} p)) \PrLC{} ((q \PrLB{} \PrLD{}q) \PrLC{} (q \PrLB{} p)) \PrKO{};\\
+\+val distributiveAND = prove\_rule [ ] T;\\
+\+val L4 = rewrite\_rule [distributiveAND] L3;\\
+\+val T = \PrKM{} ((\PrLD{}p \PrLB{} \PrLD{}q) \PrLC{} (\PrLD{}p \PrLB{} p)) \PrLC{} ((q \PrLB{} \PrLD{}q) \PrLC{} (q \PrLB{} p)) \PrKE{} ((\PrLD{}p \PrLB{} \PrLD{}q) \PrLC{} F) \PrLC{} (F \PrLC{} (q \PrLB{} p)) \PrKO{};\\
+\+val contradiction = prove\_rule [ ] T;\\
+\+val L5 = rewrite\_rule [contradiction] L4;\\
+\+val T = \PrKM{} (\PrLD{}p \PrLB{} \PrLD{}q) \PrLC{} (q \PrLB{} p) \PrKE{} (p \PrLB{} q) \PrLC{} (\PrLD{}p \PrLB{} \PrLD{}q) \PrKO{};\\
+\+val commutative = prove\_rule [ ] T;\\
+\+val L6 = rewrite\_rule [commutative] L5;\\
+\end{GFT}
+}
+
+\normalpage{CS113 LAB 3 - Problem 3.12}{}
+\putfig{.05}{.15}{.70}{p12}
+
+\end{document}
+

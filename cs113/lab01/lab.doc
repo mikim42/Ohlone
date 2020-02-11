@@ -1,0 +1,121 @@
+=TEX
+\documentclass{ffslides}
+\ffpage{25}{\numexpr 16/9}
+\usepackage{ProofPower}
+\begin{document}
+\obeyspaces
+
+\normalpage{cs113 Lab1: slide 1}{
+=SML
+datatype Boolean = F | T;
+val truth_values = [(F,F),(F,T),(T,F),(T,T)];
+=TEX
+}
+
+\normalpage{cs113 Lab1: slide 2}{
+ttgen table \\
+\input conjunction
+=SML
+fun conjunction(F,_) = F
+   | conjunction(T,q) = q;
+map conjunction truth_values;
+=TEX
+}
+\putfig{.05}{.60}{.8}{slide2}
+
+\normalpage{cs113 Lab1: slide 3}{
+ttgen table \\
+\input disjunction
+=SML
+fun disjunction(F,q) = q
+   | disjunction(T,_) = T;
+map disjunction truth_values;
+=TEX
+}
+\putfig{.05}{.60}{.8}{slide3}
+
+\normalpage{cs113 Lab1: slide 4}{
+ttgen table \\
+\input exclusive_or
+=SML
+fun exclusive_or(F,F) = F
+   | exclusive_or(F,T) = T
+   | exclusive_or(T,F) = T
+   | exclusive_or(T,T) = F;
+map exclusive_or truth_values;
+=TEX
+}
+\putfig{.05}{.70}{.8}{slide4}
+
+\normalpage{cs113 Lab1: slide 5}{
+ttgen table \\
+\input negation
+=SML
+val truth_values_negation = [(F),(T)];
+fun negation(F) = T
+   | negation(T) = F;
+map negation truth_values_negation;
+=TEX
+}
+\putfig{.05}{.60}{.8}{slide5}
+
+\normalpage{cs113 Lab1: slide 6}{
+ttgen table \\
+\input p18
+=SML
+fun equivalence(F,F) = T
+   | equivalence(F,T) = F
+   | equivalence(T,F) = F
+   | equivalence(T,T) = T;
+fun problem18(p,q) = equivalence(exclusive_or(p,q), conjunction(disjunction(p,q), negation(conjunction(p,q))));
+map problem18 truth_values;
+=TEX
+}
+\putfig{.05}{.75}{.7}{slide6}
+
+\normalpage{cs113 Lab1: slide 7}{
+ttgen table \\
+\input p9
+=SML
+val p = "The dollar is at an all-time high";
+val q = "the stock market is at a record low";
+fun problem9(p,q) = equivalence(negation(disjunction(p,q)),conjunction(negation(p),negation(q)));
+map problem9 truth_values;
+=TEX
+}
+\putfig{.05}{.65}{.8}{slide7}
+
+\normalpage{cs113 Lab1: slide 8}{
+ttgen table \\
+\input p10
+=SML
+val p = "-5 < x";
+val q = "x <= 0";
+fun problem10(p,q) = equivalence(negation(conjunction(p,q)),disjunction(negation(p),negation(q)));
+map problem10 truth_values;
+=TEX
+}
+\putfig{.05}{.65}{.8}{slide8}
+
+\normalpage{cs113 Lab1: slide 9}{
+ttgen table \\
+\input p12
+=SML
+fun problem12(p,q) =conjunction(conjunction(p,negation(q)),disjunction(negation(p),q));
+map problem12 truth_values;
+=TEX
+}
+\putfig{.05}{.6}{.8}{slide9}
+
+
+\normalpage{cs113 Lab1: slide 10}{
+ttgen table \\
+\input p13
+=SML
+val truth_values = [(F,F,F),(F,F,T),(F,T,F),(F,T,T),(T,F,F),(T,F,T),(T,T,F),(T,T,T)];
+fun problem13(p,q,r) = equivalence(conjunction(exclusive_or(p,q),r),exclusive_or(conjunction(p,r),conjunction(q,r)));
+map problem13 truth_values;
+=TEX
+}
+\putfig{.05}{.75}{.8}{slide10}
+\end{document}

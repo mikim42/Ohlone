@@ -1,0 +1,400 @@
+\def\VCDate{2018/03/15}\def\VCVersion{(Current)}
+\documentclass{ffslides}
+\ffpage{25}{\numexpr 16/9}
+\usepackage{ProofPower}
+\usepackage{amsmath,amssymb,arydshln}
+\usepackage{framed,multicol,graphicx}
+\usepackage{showframe}
+\begin{document}
+\obeyspaces
+
+\normalpage{CS113 LAB 4 - Truth Table}{
+\begin{GFT}{SML}
+\+fun ttgen\_ex((a:'a,b:'a),[ ]) = [ ] | \\
+\+    ttgen\_ex((a:'a,b:'a), q::qs : 'a list list) = \\
+\+        [q @ [a]] @ [q @ [b]] @ ttgen\_ex((a,b), qs) : 'a list list;\\
+\+fun ttgen(0, (\_, \_)) = [[ ]] : 'a list list |\\
+\+    ttgen(1, (a:'a,b:'a)) = [[a],[b]] |\\
+\+    ttgen(d, (a:'a,b:'a)) = ttgen\_ex((a,b), ttgen(d-1, (a,b)));\\
+\end{GFT}
+}
+
+
+
+
+\normalpage{CS113 LAB 4 - SML Functions}{
+\begin{GFT}{SML}
+\+fun conditional [false, false] = true | conditional [false, true] = true\\
+\+  | conditional [true, false] = false | conditional [true, true] = true;\\
+\+fun disjunction [false, false] = false | disjunction [false, true] = true\\
+\+  | disjunction [true, false] = true | disjunction [true, true] = true;\\
+\+fun isValid([ ], c, p, q) = c[p, q]\\
+\+  | isValid(pr::ps, c, p, q) = if pr[p, q]\\
+\+    then isValid(ps, c, p, q) else true;\\
+\+fun isTautology([ ]) = true\\
+\+  | isTautology(x::xs) = x andalso isTautology(xs);\\
+\end{GFT}
+}
+\btext{.60}{.15}{.35}{Algorithm to determine if an argument is valid\\
+\qi{Identify the premises and the conclusion of the argument}
+\qi{Contruct a truth table including premises and conclusion}
+\qi{Find all rows in which premises are true}
+\qi{If in each of the true rows, the conclusion is true then argument is valid}
+\qii{i.e. a tautology}}
+\putfig{.05}{.63}{.50}{conditional}
+\putfig{.05}{.70}{.50}{disjunction}
+\putfig{.05}{.78}{.80}{isValid}
+\putfig{.05}{.84}{.70}{isTautology}
+
+
+
+
+\normalpage{CS113 LAB 4 - Proof Power Rules}{
+\begin{GFT}{SML}
+\+val premise = asm\_rule;\\
+\+val modus\_ponens = \PrLE{}\_elim;\\
+\+val modus\_tollens = modus\_tollens\_rule;\\
+\+val disjunctive\_addition = \PrLC{}\_right\_intro;\\
+\+val conjunctive\_addition = \PrLB{}\_intro;\\
+\+val conjunctive\_simplification = \PrLB{}\_right\_elim;\\
+\+val disjunctive\_syllogism = \PrLC{}\_cancel\_rule;\\
+\+val hypothetical\_syllogism = \PrLE{}\_trans\_rule;\\
+\+val double\_negation = \PrLD{}\_\PrLD{}\_elim;\\
+\end{GFT}
+}
+\btext{.10}{.12}{.30}{\Large ProofPower rules of inference}
+\putfig{.45}{.25}{.50}{pp}
+
+
+
+
+
+\normalpage{CS113 LAB 4 - Example 4.3}{
+\input{ex3}
+\begin{GFT}{SML}
+\+fun premise1[p, q] = conditional[p, q];\\
+\+fun premise2[p, q] = conditional[q, p];\\
+\+fun conclusion[p, q] = disjunction[p, q];\\
+\+fun v[p, q] = isValid([premise1,premise2], conclusion, p, q);\\
+\+isTautology(map v (ttgen(2, (true, false))));\\
+\end{GFT}
+}
+\btext{.80}{.15}{.08}{
+\begin{tabular}{l}
+$p \rightarrow q$\\
+$q \rightarrow p$\\
+\hline
+$\therefore p \lor q$
+\end{tabular}}
+\putfig{.62}{.37}{.30}{ex3pre1.eps}
+\putfig{.62}{.44}{.30}{ex3pre2.eps}
+\putfig{.62}{.53}{.30}{ex3con.eps}
+\putfig{.62}{.62}{.30}{ex3isvalid.eps}
+\putfig{.62}{.71}{.30}{ex3istautology.eps}
+
+
+
+
+\normalpage{CS113 LAB 4 - Example 4.4}{
+\input{ex4}
+\begin{GFT}{SML}
+\+fun premise1[p, q] = conditional[p, q];\\
+\+fun premise2[p, q] = p;\\
+\+fun conclusion[p, q] = q;\\
+\+fun v[p, q] = isValid([premise1,premise2], conclusion, p, q);\\
+\+isTautology(map v (ttgen(2, (true, false))));\\
+\+"Proof Power"\\
+\+val premise = asm\_rule;\\
+\+val modus\_ponens = \PrLE{}\_elim;\\
+\+val p1 = premise \PrKM{} p \PrLE{} q \PrKO{};\\
+\+val p2 = premise \PrKM{} p:BOOL \PrKO{};\\
+\+modus\_ponens p1 p2;\\
+\end{GFT}
+}
+\btext{.50}{.15}{.075}{
+\begin{tabular}{l}
+$p \rightarrow q$\\
+$q$\\
+\hline
+$\therefore q$
+\end{tabular}
+}
+\btext{.37}{.40}{.18}{This argument is \blue \textbf{valid} \black (This is Modus Ponens)}
+\putfig{.65}{.15}{.30}{ex4pre1}
+\putfig{.65}{.22}{.30}{ex4pre2}
+\putfig{.65}{.29}{.30}{ex4con}
+\putfig{.65}{.36}{.30}{ex4isvalid}
+\putfig{.65}{.43}{.30}{ex4istautology}
+\btext{.65}{.60}{.15}{\Large Proof Power}
+\putfig{.50}{.68}{.45}{ex4pp}
+
+
+
+
+\normalpage{CS113 LAB 4 - Example 4.5}{
+\input{ex5}
+\begin{GFT}{SML}
+\+fun premise1[p, q] = conditional[p, q];\\
+\+fun premise2[p, q] = not q;\\
+\+fun conclusion[p, q] = not p;\\
+\+fun v[p, q] = isValid([premise1, premise2], conclusion, p, q);\\
+\+isTautology(map v (ttgen(2, (true, false))));\\
+\end{GFT}
+}
+\btext{.65}{.15}{.075}{
+\begin{tabular}{l}
+$p \rightarrow q$\\
+$\sim q$\\
+\hline
+$\therefore \sim p$
+\end{tabular}
+}
+\btext{.05}{.67}{.50}{\Large This argument is \blue \textbf{valid} \black (This is Modus Tollens)}
+\putfig{.65}{.36}{.30}{ex5pre1}
+\putfig{.65}{.43}{.30}{ex5pre2}
+\putfig{.65}{.50}{.30}{ex5con}
+\putfig{.65}{.57}{.30}{ex5isvalid}
+\putfig{.65}{.65}{.30}{ex5istautology}
+
+
+
+
+\normalpage{CS113 LAB 4 - Problem 4.3}{
+Problem 4.3\\
+\input{pb3}
+\begin{GFT}{SML}
+\+val premise = asm\_rule;\\
+\+val modus\_ponens = \PrLE{}\_elim;\\
+\+val p1 = premise \PrKM{} \PrLD{}p \PrLC{} q \PrLE{} r \PrKO{};\\
+\+val p2 = premise \PrKM{} \PrLD{}p \PrLC{} q \PrKO{};\\
+\+modus\_ponens p1 p2;\\
+\end{GFT}
+}
+\btext{.35}{.55}{.12}{
+\begin{tabular}{l}
+$\sim p \lor q \rightarrow r$\\
+$\sim p \lor q$\\
+\hline
+$\therefore r$
+\end{tabular}
+}
+\btext{.35}{.80}{.18}{This argument is \blue \textbf{valid} \black (This is Modus Ponens)}
+\putfig{.50}{.55}{.45}{pb3}
+
+
+
+
+\normalpage{CS113 LAB 4 - Problem 4.4}{
+\input{pb4}
+\begin{GFT}{SML}
+\+fun premise1[p, q] = conditional[p, q];\\
+\+fun premise2[p, q] = q;\\
+\+fun conclusion[p, q] = p;\\
+\+fun v[p, q] = isValid([premise1,premise2], conclusion, p, q);\\
+\+isTautology(map v (ttgen(2, (true, false))));\\
+\end{GFT}
+}
+\btext{.50}{.15}{.06}{
+\begin{tabular}{l}
+$p \rightarrow q$\\
+$q$\\
+\hline
+$\therefore p$
+\end{tabular}
+}
+\btext{.05}{.70}{.27}{\Large This argument is \red \textbf{invalid}}
+\putfig{.55}{.36}{.40}{pb4pre1}
+\putfig{.55}{.45}{.40}{pb4pre2}
+\putfig{.55}{.54}{.40}{pb4con}
+\putfig{.55}{.63}{.40}{pb4isvalid}
+\putfig{.55}{.72}{.40}{pb4istautology}
+
+
+
+
+\normalpage{CS113 LAB 4 - Problem 4.8}{
+\input{pb8}
+\begin{GFT}{SML}
+\+fun premise1[p, q] = disjunction[p, q];\\
+\+fun premise2[p, q] = not p;\\
+\+fun conclusion[p, q] = q;\\
+\+fun v[p, q] = isValid([premise1, premise2], conclusion, p, q);\\
+\+isTautology(map v (ttgen(2, (true, false))));\\
+\end{GFT}
+}
+\btext{.55}{.15}{.06}{
+\begin{tabular}{l}
+$p \lor q$\\
+$\sim p$\\
+\hline
+$\therefore q$
+\end{tabular}
+}
+\btext{.05}{.70}{.25}{\Large This argument is \blue \textbf{valid}}
+\putfig{.55}{.36}{.40}{pb8pre1}
+\putfig{.55}{.45}{.40}{pb8pre2}
+\putfig{.55}{.54}{.40}{pb8con}
+\putfig{.55}{.63}{.40}{pb8isvalid}
+\putfig{.55}{.72}{.40}{pb8istautology}
+
+
+
+
+\normalpage{CS113 LAB 4 - Problem 4.13}{
+\input{pb13}\\~\\
+\textit{\textbf{Premise 1}}: If Tom is not on team A, then Hua is on team B.\\
+\textit{\textbf{Premise 2}}: If Hua is not on team B, then Tom is on team A.\\
+\textit{\textbf{Therefore}}: Tom is not on team A or Hua is not on team B.\\
+\begin{GFT}{SML}
+\+val p = "Tom is on team A";\\
+\+val q = "Hua is on team B";\\
+\+fun premise1[p, q] = conditional[not p, q];\\
+\+fun premise2[p, q] = conditional[not q, p];\\
+\+fun conclusion[p, q] = disjunction[not p, not q];\\
+\+fun v[p, q] = isValid([premise1, premise2], conclusion, p, q);\\
+\+isTautology(map v (ttgen(2, (true, false))));\\
+\end{GFT}
+}
+\btext{.40}{.50}{.06}{
+\begin{tabular}{l}
+$p \lor q$\\
+$\sim p$\\
+\hline
+$\therefore q$
+\end{tabular}
+}
+\btext{.55}{.85}{.27}{\Large This argument is \red \textbf{invalid}}
+\putfig{.55}{.36}{.40}{pb13pre1}
+\putfig{.55}{.45}{.40}{pb13pre2}
+\putfig{.55}{.54}{.40}{pb13con}
+\putfig{.55}{.63}{.40}{pb13isvalid}
+\putfig{.55}{.72}{.40}{pb13istautology}
+
+
+
+
+\normalpage{CS113 LAB 4 - Problem 4.16}{
+\\~\\
+\begin{GFT}{SML}
+\+val L1 = premise \PrKM{} \PrLD{}p \PrLC{} q \PrLE{} r \PrKO{};\\
+\+val L2 = premise \PrKM{} s \PrLC{} \PrLD{}q \PrKO{};\\
+\+val L3 = premise \PrKM{} \PrLD{}t \PrKO{};\\
+\+val L4 = premise \PrKM{} p \PrLE{} t \PrKO{};\\
+\+val L5 = premise \PrKM{} \PrLD{}p \PrLB{} r \PrLE{} \PrLD{}s \PrKO{};\\
+\+val L6 = modus\_tollens L4 L3;\\
+\+val L7 = disjunctive\_addition \PrKM{} q:BOOL \PrKO{} L6;\\
+\+val L8 = modus\_ponens L1 L7;\\
+\+val L9 = conjunctive\_addition L6 L8;\\
+\+val L10 = modus\_ponens L5 L9;\\
+\+val L11 = disjunctive\_syllogism L2 L10;\\
+\end{GFT}
+}
+\btext{.05}{.15}{.60}{\Large Use Proofpower rules of inference to derive the conclusion.}
+\btext{.45}{.25}{.50}{
+\begin{tabular}{rll}
+1. & $\sim p \lor q \rightarrow r$		& premise\\
+2. & $s \lor \sim q$				& premise\\
+3. & $\sim t$					& premise\\
+4. & $p \rightarrow t$				& premise\\
+5. & $\sim p \land r \rightarrow \sim s$	& premise\\
+\hdashline
+6. & $\sim p$					& modus tollens\\
+7. & $\sim p \lor q$				& disjunctive addtion 6\\
+8. & $r$					& modus ponens 1 7\\
+9. & $\sim p \land r$				& conjunctive addition 6 8\\
+10.& $\sim s$					& modus ponens 5 9\\
+11.& $\sim q$					& disjunctive syllogism 2 10\\
+\hline
+   & $\therefore \quad \sim q$			& conclusion
+\end{tabular}
+}
+
+
+
+
+\normalpage{CS113 LAB 4 - Problem 4.16}{}
+\putfig{.05}{.20}{.90}{pb16}
+
+
+
+
+\normalpage{CS113 LAB 4 - Problem 4.17}{
+\\~\\
+\begin{GFT}{SML}
+\+val L1 = premise \PrKM{} \PrLD{}p \PrLE{} r \PrLB{} \PrLD{}s \PrKO{};\\
+\+val L2 = premise \PrKM{} t \PrLE{} s \PrKO{};\\
+\+val L3 = premise \PrKM{} u \PrLE{} \PrLD{}p \PrKO{};\\
+\+val L4 = premise \PrKM{} \PrLD{}w \PrKO{};\\
+\+val L5 = premise \PrKM{} u \PrLC{} w \PrKO{};\\
+\+val L6 = disjunctive\_syllogism L5 L4;\\
+\+val L7 = modus\_ponens L3 L6;\\
+\+val L8 = modus\_ponens L1 L7;\\
+\+val L9 = conjunctive\_simplification L8;\\
+\+val L10 = modus\_tollens L2 L9;\\
+\+val L11 = disjunctive\_addition \PrKM{} w:BOOL \PrKO{} L10;\\
+\end{GFT}
+}
+\btext{.05}{.15}{.80}{\large Use the valid argument forms of this section to deduce the conclusion from the premises.}
+\btext{.45}{.25}{.50}{
+\begin{tabular}{rll}
+1. & $\sim p \rightarrow r \land \sim s$	& premise\\
+2. & $t \rightarrow s$				& premise\\
+3. & $u \rightarrow \sim p$			& premise\\
+4. & $\sim w$					& premise\\
+5. & $u \lor w$					& premise\\
+\hdashline
+6. & $u$					& disjunctive syllogism\\
+7. & $\sim p$					& modus ponens 3 6\\
+8. & $r \land \sim s$				& modus ponens 1 7\\
+9. & $\sim s$					& conjunctive simplification L8\\
+10.& $\sim t$					& modus tollens L2 L9\\
+11.& $\sim t \lor w$				& disjunctive addition L10\\
+\hline
+   & $\therefore \quad \sim t \lor w$		& conclusion
+\end{tabular}
+}
+
+
+
+
+\normalpage{CS113 LAB 4 - Problem 4.17}{}
+\putfig{.05}{.20}{.90}{pb17}
+
+
+
+
+\normalpage{CS113 LAB 4 - Problem 4.18}{
+\\~\\
+\begin{GFT}{SML}
+\+val L1 = premise \PrKM{} \PrLD{}(p \PrLC{} q) \PrLE{} r \PrKO{};\\
+\+val L2 = premise \PrKM{} \PrLD{}p \PrKO{};\\
+\+val L3 = premise \PrKM{} \PrLD{}r \PrKO{};\\
+\+val L4 = modus\_tollens L1 L3;\\
+\+val L5 = double\_negation L4;\\
+\+val L6 = disjunctive\_syllogism L5 L2;\\
+\end{GFT}
+}
+\btext{.05}{.15}{.90}{\Large Use the valid argument forms of this section to deduce the conclusion from the premises.}
+\btext{.05}{.65}{.90}{\Large Notice that ProofPower doesn't apply double-negation automatically,\\ so inserted double-negation manually. (\magenta L5\black )}
+\btext{.45}{.25}{.50}{\begin{tabular}{rll}
+1. & $\sim p \lor q \rightarrow r$		& premise\\
+2. & $\sim p$					& premise\\
+3. & $\sim r$					& premise\\
+\hdashline
+4. & $\sim \sim(p \lor q)$			& modus tollens 1 3\\
+\magenta 5. & $p \lor q$			& double-negation 4\\ \black
+6. & $q$					& disjunctive syllogism 2 5\\
+\hline
+   & $\therefore \quad \sim s$			& conclusion
+\end{tabular}}
+
+
+
+
+\normalpage{CS113 LAB 4 - Problem 4.18}{}
+\putfig{.05}{.20}{.90}{pb18}
+
+
+
+
+\end{document}

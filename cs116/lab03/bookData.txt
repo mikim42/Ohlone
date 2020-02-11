@@ -1,0 +1,45 @@
+5
+C++Programing: From Problem Analysis to Program Design
+5-17-525281-3
+ABC
+2000
+52.50
+20
+1
+Malik, D.S.
+Fuzzy Discrete Structures
+3-7908-1335-4
+Physica-Verlag
+2000
+89.00
+10
+2
+Malik, Davender
+Mordeson, John
+Fuzzy Mathematic in Medicine
+3-7908-1325-7
+Physica-Verlag
+2000
+89.00
+10
+3
+Mordeson, John
+Malik, Davender
+Cheng, Shih-Chung
+Harry John and The Magician
+0-239-23635-0
+McArthur A. Devine Books
+1999
+19.95
+10
+3
+Goof, Goofy
+Pluto, Peter
+Head, Mark
+Dynamic InterWeb Programming
+22-99521-453-1
+GNet
+1998
+39.99
+25
+1

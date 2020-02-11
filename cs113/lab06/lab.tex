@@ -1,0 +1,482 @@
+\def\VCDate{2018/04/14}\def\VCVersion{(Current)}
+\documentclass{ffslides}
+\ffpage{25}{\numexpr 16/9}
+\usepackage{ProofPower}
+\usepackage{amsmath,amssymb,arydshln}
+\usepackage{framed,multicol,graphicx}
+\usepackage{showframe}
+\newcommand{\labtitle}{CS113 Lab 6 -}
+\begin{document}
+\obeyspaces
+
+\normalpage{\labtitle SML}{
+\begin{GFT}{SML}
+\+PolyML.print\_depth 100;\\
+\+infix --;\\
+\+fun (i -- n) = if (i > n)\\
+\+    then [ ]\\
+\+    else i::(i + 1 -- n);\\
+\+\\
+\+fun elementOf(a, [ ]) = false |\\
+\+    elementOf(a, x::xs) = if (a = x)\\
+\+    then true\\
+\+    else elementOf(a, xs);\\
+\+\\
+\+fun insert(x, [ ]) = [x] |\\
+\+    insert(x, ys) = x::ys;\\
+\end{GFT}
+}
+\btext{.55}{.15}{.40}{
+{\Large \textbf{SML functions\\}}
+
+\qi{(i -- n) creates a list of number}
+\qii{$A = \{i,\ i+1,\ i+2,...,\ n\}$}
+
+\qi{elementOf checks whether $a$ is a member of $x$}
+\qii{$x \in A$}
+
+\qi{insert inserts an element $x$ into $ys$}
+}
+%\putfig{.05}{.50}{.45}{sml}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle SML}{
+\begin{GFT}{SML}
+\+fun remove(x, [ ]) = [ ] |\\
+\+    remove(x, y::ys) = if (x = y)\\
+\+    then remove(x, ys)\\
+\+    else y::remove(x, ys);\\
+\+\\
+\+fun subset([ ], \_) = true |\\
+\+    subset(x::xs, ys) = if not (elementOf(x, ys))\\
+\+    then false\\
+\+    else subset(xs, ys);\\
+\+\\
+\+fun subsetEqual(A, B) = subset(A, B) andalso subset(B, A);\\
+\+\\
+\+fun properSubset(A, B) =\\
+\+    subset(A, B) andalso not(subset(B, A));\\
+\end{GFT}
+}
+\btext{.55}{.15}{.40}{
+{\Large \textbf{SML functions\\}}
+
+\qi{remove removes an element $x$ from $ys$}
+
+\qi{subset checks whether $x$ is subset of $y$}
+\qii{$A \subseteq B$}
+
+\qi{subsetEqual checks whether two sets are equal}
+\qii{$A=B\ that\ A \subseteq B\ and\ B \subseteq A$}
+
+\qi{properSubset checks whether A is a proper subset of B}
+\qii{$A \subset B\ that\ A \subseteq B\ and\ A \neq B$}
+}
+%\putfig{.05}{.50}{.45}{sml}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle SML}{
+\begin{GFT}{SML}
+\+fun relativeComplement(xs, [ ]) = [ ] |\\
+\+    relativeComplement([ ], ys) = ys |\\
+\+    relativeComplement(x::xs, ys) = if (elementOf(x, ys))\\
+\+    then relativeComplement(xs, remove(x, ys))\\
+\+    else relativeComplement(xs, ys);\\
+\+\\
+\+fun union(xs, [ ]) = xs |\\
+\+    union([ ], ys) = ys |\\
+\+    union(x::xs, ys) = if not (elementOf(x, ys))\\
+\+    then x::union(xs, ys)\\
+\+    else union(xs, ys);\\
+\end{GFT}
+}
+\btext{.55}{.15}{.40}{
+{\Large \textbf{SML functions\\}}
+
+\qi{relativeComplement returns the relative complement of A with respect to B}
+\qii{$B \setminus A$}
+
+\qi{union returns the union of A and B}
+\qii{$A \cup B$}
+}
+%\putfig{.05}{.50}{.45}{sml}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle SML}{
+\begin{GFT}{SML}
+\+fun intersection([ ], \_) = [ ] |\\
+\+    intersection(\_, [ ]) = [ ] |\\
+\+    intersection(x::xs, ys) = if (elementOf(x, ys))\\
+\+    then x::intersection(xs, ys)\\
+\+    else intersection(xs, ys);\\
+\+\\
+\+fun disjointSets(A, B) = if (intersection(A, B) = [ ])\\
+\+    then true\\
+\+    else false;\\
+\+\\
+\+fun symmetricDifference(xs, [ ]) = xs |\\
+\+    symmetricDifference([ ], ys) = ys |\\
+\+    symmetricDifference(x::xs, ys) = if (elementOf(x, ys))\\
+\+    then symmetricDifference(xs, remove(x, ys))\\
+\+    else x::symmetricDifference(xs, ys);\\
+\end{GFT}
+}
+\btext{.50}{.15}{.45}{
+{\Large \textbf{SML functions\\}}
+
+\qi{intersection returns the intersection of A and B}
+\qii{$A \cap B$}
+
+\qi{disjointSets checks whether A and B are disjoint sets}
+\qii{$A \cap B=\emptyset$}
+
+\qi{symmetricDifference returns the symmetric difference of A and B}
+\qii{$A \triangle B$}
+}
+%\putfig{.05}{.50}{.45}{sml}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle SML}{
+\begin{GFT}{SML}
+\+fun cartesianProduct([ ], \_) = [ ] |\\
+\+    cartesianProduct(x::xs, ys) =\\
+\+    cartesianProduct(xs, ys) @ (map (fn v => (x, v)) ys);\\
+\+\\
+\+fun powerSet([ ]) = [ [ ] ] |\\
+\+    powerSet(x::xs) =\\
+\+    powerSet(xs) @ (map (fn S => x::S) (powerSet(xs)));\\
+\end{GFT}
+}
+\btext{.50}{.15}{.45}{
+{\Large \textbf{SML functions\\}}
+
+\qi{cartesianProduct returns the Cartesian product of given sets}
+\qii{$ \mathbf{A}_\mathbf{1} \times \mathbf{A}_\mathbf{2} \times \dotsb \times \mathbf{A}_\mathbf{n} = \\ \{ ( \mathbf{a}_\mathbf{1} , \mathbf{a}_\mathbf{2} , \dotsb , \mathbf{a}_\mathbf{n} ) | \mathbf{a}_\mathbf{1} \in \mathbf{A}_\mathbf{2} , \mathbf{a}_\mathbf{1} \in \mathbf{A}_\mathbf{2} , \dotsb , \mathbf{a}_\mathbf{n} \in \mathbf{A}_\mathbf{n} \} $}
+
+\qi{powerSet returns the power set of A}
+\qii{$\mathcal{P} (A)=\{ \emptyset , \{ a \} , \{ b \} , \{ c \} , \{ a, b \} , \{ a, c \} , \{ b, c \} , \{ a, b, c \} \}$}
+}
+%\putfig{.05}{.50}{.45}{sml}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Example 12.4}{%
+\large\qi{%
+Suppose that $A=\{2,4,6\},\ B=\{2,6\},\ and\ C=\{4,6\}.$\\
+Determine which of these sets are subsets of which other(s) of these sets.
+}
+\begin{GFT}{SML}
+\+val A = [2, 4, 6];\\
+\+val B = [2, 6];\\
+\+val C = [4, 6];\\
+\+subset(B, A);\\
+\+subset(C, A);\\
+\end{GFT}
+}
+\btext{.05}{.60}{.40}{
+\center{\Huge{$ B \subseteq A \ and \ C \subseteq A $ \Large{$ \blacksquare $}\\~\\}}
+}
+\putfig{.50}{.60}{.40}{ex4}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Example 12.6}{%
+\large\qi{%
+Determine whether each of the following pairs of sets are equal.\\
+\large\qi[(a) ]{$ \{ 1,3,5\} and\ \{ 5,3,1\} $}%
+}
+\begin{GFT}{SML}
+\+val A = [1, 3, 5];\\
+\+val B = [5, 3, 1];\\
+\+subsetEqual(A, B);\\
+\end{GFT}
+}
+\btext{.05}{.60}{.40}{
+\center{\Huge{$ A = B $ \Large{$ \blacksquare $}\\~\\}}
+}
+\putfig{.50}{.60}{.40}{ex6}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Example 12.10}{%
+\large\qi{%
+Let $A = \{ a, b, c\} , B=\{ b,c,d\} ,\ and\ C=\{b,c,e\} .$\\
+\large\qi[(a) ]{Find $A\cup (B\cap C),(A\cup B)\cap C,\ and\ (A\cup B)\cap (A\cup C).$ Which of these sets are equal?}\\%
+\large\qi[(b) ]{Find $A\cap (B\cup C),(A\cap B)\cup C,\ and\ (A\cap B)\cup (A\cap C).$ Which of these sets are equal?}\\%
+\large\qi[(c) ]{Find $A\setminus (B\setminus C)\ and\ (A\setminus B)\setminus C.$ Are these sets equal?}%
+}
+\begin{GFT}{SML}
+\+val A = [\#"a", \#"b", \#"c"]; val B = [\#"b", \#"c", \#"d"]; val C = [\#"b", \#"c", \#"e"];\\
+\+val a1 = union(A, intersection(B, C));\\
+\+val a2 = intersection(union(A, B), C);\\
+\+val a3 = intersection(union(A, B), union(A, C));\\
+\+val b1 = intersection(A, union(B, C));\\
+\+val b2 = union(intersection(A, B), C);\\
+\+val b3 = union(intersection(A, B), intersection(A, C));\\
+\+val c1 = relativeComplement(A, relativeComplement(B, C));\\
+\+val c2 = relativeComplement(relativeComplement(A, B), C);\\
+\end{GFT}
+}
+
+\normalpage{\labtitle Example 12.10}{%
+\begin{GFT}{SML}
+\+subsetEqual(a1, a3);\\
+\+subsetEqual(b1, b3);\\
+\+subsetEqual(c1, c2);\\
+\end{GFT}
+}
+\btext{.05}{.48}{.40}{\center{%
+\Large{\qi[  a) ]{$ A\cup (B\cap C)=(A\cup B)\cap (A\cup C) $}}\\~\\%
+\Large{\qi[  b) ]{$ A\cap (B\cup C)=(A\cap B)\cup (A\cap C) $}}\\~\\%
+\Large{\qi[  c) ]{$ A\setminus (B\setminus C)\neq (A\setminus B)\setminus C $ \small{$ \blacksquare $}}}\\~\\%
+}}
+\putfig{.50}{.35}{.40}{ex10}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Example 12.12}{%
+\large\qi{%
+The \textbf{symmetric difference} of $A$ and $B$, denoted by $A\triangle B,$ is the set\\ containing those elements in either $A$ or $B$ but not both.
+}
+\large\qi{%
+Find $A\triangle B\ if\ A=\{ 1,3,5\} \ and\ B=\{ 1,2,3\} .$
+}
+\begin{GFT}{SML}
+\+val A = [1, 3, 5];\\
+\+val B = [1, 2, 3];\\
+\+symmetricDifference(A, B);\\
+\end{GFT}
+}
+\btext{.05}{.60}{.40}{
+\center{\Huge{$ A\triangle B=\{ 2,5\} $ \Large{$ \blacksquare $}\\~\\}}
+}
+\putfig{.50}{.60}{.40}{ex12}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Example 12.13}{%
+\large\qi{%
+Let $A=\{ x,y\} ,B=\{ 1,2,3\} ,\ and\ C=\{ a,b\} .$\\
+\large\qi[(b) ]{%
+Find $(A\times B)\times C .$
+}
+}
+\begin{GFT}{SML}
+\+val A = [\#"x", \#"y"];\\
+\+val B = [\#"1", \#"2", \#"3"];\\
+\+val C = [\#"a", \#"b"];\\
+\+cartesianProduct(cartesianProduct(A, B), C);\\
+\end{GFT}
+}
+\btext{.50}{.15}{.40}{%
+\center{\large {$ (A\times B)\times C=\{ ((x,1),a),((x,2),a),((x,3),a),((y,1),a),$\\
+$((y,2),a),((y,3),a),((x,1),b),((x,2),b),$\\
+$((x,3),b),((y,1),b)((y,2),b),((y,3),b)\} $}\\~\\}
+}
+\putfig{.05}{.58}{.65}{ex13}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Problem 12.3}{%
+\large\qi{%
+Which of the following sets are equal?\\
+\large\qi[(a) ]{$ \{ a,b,c,d\} $}\\
+\large\qi[(b) ]{$ \{ d,e,a,c\} $}\\
+\large\qi[(c) ]{$ \{ d,b,a,c\} $}\\
+\large\qi[(d) ]{$ \{ a,a,d,e,c,e\} $}%
+}
+\begin{GFT}{SML}
+\+val A = [\#"a", \#"b", \#"c", \#"d"];\\
+\+val B = [\#"d", \#"e", \#"a", \#"c"];\\
+\+val C = [\#"d", \#"b", \#"a", \#"c"];\\
+\+val D = [\#"a", \#"a", \#"d", \#"e", \#"c", \#"e"];\\
+\+subsetEqual(A, C);\\
+\+subsetEqual(B, D);\\
+\end{GFT}
+}
+\btext{.55}{.15}{.35}{
+\center{\Huge{%
+$ A=C, $\\~\\
+$ B=D $ \Large{$ \blacksquare $}\\~\\}}
+}
+\putfig{.50}{.60}{.45}{pb3}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Problem 12.4}{%
+\large\qi{%
+Let $A=\{ c,d,f,g\} ,B=\{ f,i\} ,\ and\ C=\{ d,g\} .$\\
+Answer each of the following questions.\\
+Give resons for your answers.\\
+\large\qi[(a) ]{Is $ B\subseteq A? $}\\
+\large\qi[(b) ]{Is $ C\subseteq A? $}\\
+\large\qi[(c) ]{Is $ C\subseteq C? $}\\
+\large\qi[(d) ]{Is $ C\subset A? $}%
+}
+\begin{GFT}{SML}
+\+val A = [\#"c", \#"d", \#"f", \#"g"];\\
+\+val B = [\#"f", \#"i"];\\
+\+val C = [\#"d", \#"g"];\\
+\+subset(B, A);\\
+\+subset(C, A);\\
+\+subset(C, C);\\
+\+properSubset(C, A);\\
+\end{GFT}
+}
+\btext{.55}{.15}{.35}{
+\center{\Large{%
+a) $ B\not\subseteq A $\\
+b) $ C\subseteq A $\\
+c) $ C\subseteq C $\\
+d) $ C\subset A $ \small{$ \blacksquare $}\\~\\}}
+}
+\putfig{.50}{.60}{.45}{pb4}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Problem 12.5}{%
+\large\qi[(a) ]{Is $ 3\in \{ 1,2,3\} ? $\\}
+\large\qi[(e) ]{Is $ 1\in \{ 1\} ? $\\}
+\large\qi[(g) ]{Is $ \{ 1\} \subseteq \{ 1,2\} ? $\\}
+\large\qi[(j) ]{Is $ \{ 1\} \subseteq \{ 1\} ? $\\}
+\begin{GFT}{SML}
+\+elementOf(1, 1 -- 3);\\
+\+elementOf(1, 1 -- 1);\\
+\+subset(1 -- 1, 1 -- 2);\\
+\+subset(1 -- 1, 1 -- 1);\\
+\end{GFT}
+}
+\btext{.55}{.15}{.35}{\center\Large%
+a) $ 3\in \{ 1,2,3\} $\\
+e) $ 1\in \{ 1\} $\\
+g) $ \{ 1\} \subseteq \{ 1,2\} $\\
+j) $ \{ 1\} \subseteq \{ 1\} $ \small{$ \blacksquare $}\\~\\
+}
+\putfig{.50}{.55}{.40}{pb5}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Problem 12.6}{%
+\large{Let $A=\{ b,c,d,f,g\} \ and\ B=\{ a,b,c\} .$\\
+Find each of the following:}\\
+\large\qi[(a) ]{$ A\cup B $}\\
+\large\qi[(b) ]{$ A\cap B $}\\
+\large\qi[(c) ]{$ A\setminus B$}\\
+\large\qi[(d) ]{$ B\setminus A$}
+\begin{GFT}{SML}
+\+val A = [\#"b", \#"c", \#"d", \#"f", \#"g"];\\
+\+val B = [\#"a", \#"b", \#"c"];\\
+\+union(A, B);\\
+\+intersection(A, B);\\
+\+relativeComplement(A, B);\\
+\+relativeComplement(B, A);\\
+\end{GFT}
+}
+\btext{.55}{.15}{.35}{\center\Large%
+a) $ A\cup B=\{ a,b,c,d,f,g\} $\\
+b) $ A\cap B=\{ b,c\} $\\
+c) $ A\setminus B=\{ a\} $\\
+d) $ B\setminus A=\{ d,f,g\} $ \small{$ \blacksquare $}\\~\\
+}
+\putfig{.45}{.55}{.50}{pb6}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Problem 12.8}{%
+\large{Let $A=\{ x,y,z,w\} \ and\ B=\{ a,b\} .$\\
+List the elements of each of the following:}\\
+\large\qi[(a) ]{$ A\times B $}\\
+\large\qi[(b) ]{$ B\times A $}\\
+\large\qi[(c) ]{$ A\times A$}\\
+\large\qi[(d) ]{$ B\times B$}
+\begin{GFT}{SML}
+\+val A = [\#"x", \#"y", \#"z", \#"w"];\\
+\+val B = [\#"a", \#"b"];\\
+\+cartesianProduct(A, B);\\
+\+cartesianProduct(B, A);\\
+\+cartesianProduct(A, A);\\
+\+cartesianProduct(B, B);\\
+\end{GFT}
+}
+\putfig{.40}{.30}{.55}{pb8}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Problem 12.9}{%
+\large\qi[(a) ]{Find all possible subsets of the set $A=\{ a,b,c\} .$}\\
+\large\qi[(b) ]{How many proper subsets are there?}
+\begin{GFT}{SML}
+\+val A = [\#"a", \#"b", \#"c"];\\
+\+powerSet(A);\\
+\end{GFT}
+}
+\btext{.55}{.15}{.35}{\center\Large%
+a) 8 possible subsets\\
+b) 8 - 1(the euqal subset), therefore 7\\~\\
+}
+\putfig{.05}{.50}{.90}{pb9}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Problem 12.12}{%
+\large\qi{Let $A$ be the set of the firsrt five composite numbers and $B$ be the set of\\ positive integers less than or equal to 8. Find $A\setminus B$ and $B\setminus A.$}
+\begin{GFT}{SML}
+\+val A = [4, 6, 8, 9, 10];\\
+\+val B = (1 -- 8);\\
+\+relativeComplement(A, B);\\
+\+relativeComplement(B, A);\\
+\+powerSet(A);\\
+\end{GFT}
+}
+\btext{.55}{.30}{.35}{\center\Large%
+a) $A\setminus B =\{ 1,2,3,5,7\} $\\
+b) $B\setminus A =\{ 9,10\} $ \small{$ \blacksquare $}\\~\\
+}
+\putfig{.05}{.60}{.50}{pb12}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Problem 12.14}{%
+\large\qi{Let $A$ be the set of natural numbers less than 0 and $B=\{ 1,3,7\} .$\\
+Find $A\cup B$ and $A\cap B.$}
+\begin{GFT}{SML}
+\+val A = [ ];\\
+\+val B = [1, 3, 7];\\
+\+union(A, B);\\
+\+intersection(A, B);\\
+\end{GFT}
+}
+\btext{.55}{.30}{.35}{\center\Large%
+Notice that A = $ \emptyset $, therefore\\
+$ A\cup B=\{ 1,3,7\} $\\
+$ A\cap B=\emptyset $ \small{$ \blacksquare $}\\~\\
+}
+\putfig{.05}{.60}{.50}{pb14}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Problem 12.15}{%
+\large\qi{Let\\
+$A=\{ x\in \mathbb{N} | 4\ge x \ge 8\} $\\
+$B=\{ x\in \mathbb{N} | x$ even and $x\ge 10.$\\
+Find $A\cup B$ and $A\cap B.$} 
+\begin{GFT}{SML}
+\+val A = (4 -- 8);\\
+\+val B = [2, 4, 6, 8, 10];\\
+\+union(A, B);\\
+\+intersection(A, B);\\
+\end{GFT}
+}
+\btext{.55}{.30}{.35}{\center\Large%
+$ A\cup B=\{ 2,4,6,8,10\} $\\
+$ A\cap B=\{ 4,6,8\} $ \small{$ \blacksquare $}\\~\\
+}
+\putfig{.05}{.60}{.50}{pb15}
+
+%------------------------------------------------------------------------------
+
+\end{document}

@@ -1,0 +1,389 @@
+\def\VCDate{2018/04/25}\def\VCVersion{4becf9b}
+\documentclass{ffslides}
+\ffpage{25}{\numexpr 16/9}
+\usepackage{ProofPower}
+\usepackage{amsmath,amssymb,arydshln}
+\usepackage{framed,multicol,graphicx}
+\usepackage{showframe}
+\newcommand{\labtitle}{CS113 Lab 7 -}
+\begin{document}
+\obeyspaces
+
+\normalpage{\labtitle SML}{
+}
+\ctext{.05}{.10}{.00}{
+\begin{GFT}{SML}
+\+PolyML.print\_depth 100;\\
+\+infix --;\\
+\+fun (i -- n) = if (i > n)\\
+\+    then [ ]\\
+\+    else i::(i + 1 -- n);\\
+\+\\
+\+fun elementOf(a, [ ]) = false |\\
+\+    elementOf(a, x::xs) = if (a = x)\\
+\+    then true\\
+\+    else elementOf(a, xs);\\
+\+\\
+\+fun insert(x, [ ]) = [x] |\\
+\+    insert(x, ys) = x::ys;\\
+\end{GFT}
+}
+\ctext{.50}{.10}{.00}{
+\begin{GFT}{SML}
+\+fun remove(x, [ ]) = [ ] |\\
+\+    remove(x, y::ys) = if (x = y)\\
+\+    then remove(x, ys)\\
+\+    else y::remove(x, ys);\\
+\+\\
+\+fun subset([ ], \_) = true |\\
+\+    subset(x::xs, ys) = if not (elementOf(x, ys))\\
+\+    then false\\
+\+    else subset(xs, ys);\\
+\+\\
+\+fun subsetEqual(A, B) = \\
+\+    subset(A, B) andalso subset(B, A);\\
+\+\\
+\+fun properSubset(A, B) =\\
+\+    subset(A, B) andalso not(subset(B, A));\\
+\end{GFT}
+}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle SML}{
+}
+\ctext{.05}{.10}{.00}{
+\begin{GFT}{SML}
+\+fun relativeComplement(xs, [ ]) = [ ] |\\
+\+    relativeComplement([ ], ys) = ys |\\
+\+    relativeComplement(x::xs, ys) = if (elementOf(x, ys))\\
+\+    then relativeComplement(xs, remove(x, ys))\\
+\+    else relativeComplement(xs, ys);\\
+\+\\
+\+fun union(xs, [ ]) = xs |\\
+\+    union([ ], ys) = ys |\\
+\+    union(x::xs, ys) = if not (elementOf(x, ys))\\
+\+    then x::union(xs, ys)\\
+\+    else union(xs, ys);\\
+\end{GFT}
+}
+\ctext{.50}{.10}{.00}{
+\begin{GFT}{SML}
+\+fun intersection([ ], \_) = [ ] |\\
+\+    intersection(\_, [ ]) = [ ] |\\
+\+    intersection(x::xs, ys) = if (elementOf(x, ys))\\
+\+    then x::intersection(xs, ys)\\
+\+    else intersection(xs, ys);\\
+\+\\
+\+fun disjointSets(A, B) = if (intersection(A, B) = [ ])\\
+\+    then true\\
+\+    else false;\\
+\+\\
+\+fun symmetricDifference(xs, [ ]) = xs |\\
+\+    symmetricDifference([ ], ys) = ys |\\
+\+    symmetricDifference(x::xs, ys) = if (elementOf(x, ys))\\
+\+    then symmetricDifference(xs, remove(x, ys))\\
+\+    else x::symmetricDifference(xs, ys);\\
+\end{GFT}
+}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle SML}{
+}
+\ctext{.05}{.10}{.00}{
+\begin{GFT}{SML}
+\+fun cartesianProduct([ ], \_) = [ ] |\\
+\+    cartesianProduct(x::xs, ys) =\\
+\+    (map (fn v => (x, v)) ys) @ cartesianProduct(xs, ys);\\
+\+\\
+\+fun powerSet([ ]) = [ [ ] ] |\\
+\+    powerSet(x::xs) =\\
+\+    powerSet(xs) @ (map (fn S => x::S) (powerSet(xs)));\\
+\+\\
+\+fun domain([ ]) = [ ] |\\
+\+    domain((a, b)::ps) = if elementOf(a, domain(ps))\\
+\+                         then domain(ps)\\
+\+                         else a::domain(ps);\\
+\+fun range([ ]) = [ ] |\\
+\+    range((a, b)::ps) = if elementOf(b, range(ps))\\
+\+                        then range(ps)\\
+\+                        else b::range(ps);\\
+\end{GFT}
+}
+\ctext{.50}{.10}{.00}{
+\begin{GFT}{SML}
+\+fun divides(a, b) = b mod a = 0;\\
+\+\\
+\+fun noDuplicates([ ]) = true |\\
+\+    noDuplicates(x::xs) = (not(elementOf(x, xs)))\\
+\+                          andalso noDuplicates(xs);\\
+\+\\
+\+fun isFunction(R, A) = \\
+\+    let\\
+\+        fun f([ ]) = [ ] |\\
+\+            f((a, b)::ps) = a::f(ps);\\
+\+    in\\
+\+        subsetEqual(f(R), A) andalso noDuplicates(f(R)) end;\\
+\+\\
+\+fun inverse([ ]) = [ ] |\\
+\+    inverse((a, b)::ps) = (b, a)::inverse(ps);\\
+\end{GFT}
+}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle SML}{
+}
+\ctext{.05}{.10}{.00}{
+\begin{GFT}{SML}
+\+fun composition([ ], ss) = [ ] |\\
+\+    composition(r::rs, ss) =\\
+\+    let\\
+\+        fun f((a, b), [ ]) = [ ] |\\
+\+            f((a, b), (c, d)::ss) = if (b = c)\\
+\+            then (a, d)::f((a, b), ss)\\
+\+            else f((a, b), ss);\\
+\+    in\\
+\+        f(r, ss)@composition(rs, ss) end;\\
+\+\\
+\+fun lessEqu(a, b) = a <= b;\\
+\end{GFT}
+}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Example 15.5}{%
+\begin{GFT}{SML}
+\+val A = (2 -- 4);\\
+\+val B = (3 -- 7);\\
+\+\\
+\+"Example 15.5(a)";\\
+\+val r = List.filter divides(cartesianProduct(A, B));\\
+\+domain(r);\\
+\+range(r);\\
+\+\\
+\+val A = (1 -- 4);\\
+\+\\
+\+"Example 15.5(b)";\\
+\+val r = List.filter lessEqu(cartesianProduct(A, A));\\
+\+domain(r);\\
+\+range(r);\\
+\end{GFT}
+}
+\ctext{.50}{.15}{.45}{\large
+\qi[(a) ]{Let A = \{2,3,4\} and B = \{3,4,5,6,7\}.\\
+          Define the relation $R$ by $aRb$ if and only if $a divides b$.\\
+          Find, $R$, Dom($R$), Range($R$).\\
+          \qi{R = \{(2, 4),(2, 6),(3, 3),(3, 6),(4, 4)\}}
+          \qi{Dom(R) = \{2, 3, 4\}}
+          \qi{Range(R) = \{3, 4, 6\}}
+}
+\qi[(b) ]{Let A = \{1,2,3,4\}\\
+          Define the relation R by $aRb$ if and donly if $a \le b$.\\
+          Find, $R$, Dom($R$), Range($R$).\\
+          \qi{R = \{(1, 1),(1, 2),(1, 3),(1, 4),(2, 2),\\
+              (2, 3),(2, 4),(3, 3),(3, 4),(4, 4)\}}
+          \qi{Dom(R) = \{2, 3, 4\}}
+          \qi{Range(R) = \{3, 4, 6\}}
+}
+}
+\normalpage{\labtitle Exaple 15.5}{}
+\putfig{.05}{.15}{.65}{ex5a}
+\putfig{.05}{.50}{.85}{ex5b}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Example 15.6}{%
+\begin{GFT}{SML}
+\+val A = [1,2,3];\\
+\+val B = ["a", "b", "c"];\\
+\+\\
+\+"Example 15.6(a)";\\
+\+val R = [(1, "a"), (2, "b"), (3, "a")];\\
+\+isFunction(R, A);\\
+\+range(R);\\
+\+\\
+\+"Example 15.6(b)";\\
+\+val R = [(1, "a"), (2, "b"), (3, "c"), (1, "b")];\\
+\+isFunction(R, A);\\
+\end{GFT}
+}
+\ctext{.45}{.15}{.50}{\large
+\qi[(a) ]{Show that the relation $f = {(1,a),(2,b),(3,a)}$\\
+          defines a function from $A = \{1,2,3\}$ to $B = \{a,b,c\}$.\\
+          \qi{Note that each element of A has exactly one image.\\
+          Hence, $f$ is a function with domain $A$ and \\
+          range Range($f$) = \{$a, b$\}}
+          \qi{Dom(R) = \{2, 3, 4\}}
+          \qi{Range(R) = \{3, 4, 6\}}
+}
+\qi[(b) ]{Show that the relation $f = \{(1,a),(2,b),(3,c),(1,b)\}$\\
+          does not define a function from $A$ to $B$.\\
+          \qi{The relation $f$ does not define a function since\\
+              the element 1 has two images, namely $a$ and $b$}
+          \qi{Dom(R) = \{2, 3, 4\}}
+          \qi{Range(R) = \{3, 4, 6\}}
+}
+}
+\normalpage{\labtitle Example 15.6}{}
+\putfig{.05}{.15}{.65}{ex6a}
+\putfig{.05}{.60}{.65}{ex6b}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Example 15.8}{%
+\begin{GFT}{SML}
+\+val R = [(1, "y"), (1, "z"), (3, "y")];\\
+\+val A = [1, 2, 3];\\
+\+val B = ["x", "y", "z"];\\
+\+\\
+\+"Example 15.8(a)";\\
+\+inverse(R);\\
+\+\\
+\+"Example 15.8(b)";\\
+\+subsetEqual(R, inverse(inverse(R)));\\
+\end{GFT}
+}
+\ctext{.50}{.15}{.50}{\large
+\qi[(a) ]{Find $R^{-1}$.\\
+          \qi{$R^{-1}$ = \{(y, 1),(z, 1),(y, 3)\}}
+}
+\qi[(b) ]{Compare $(R^{-1})^{-1} and R$.\\
+          \qi{$(R^{-1})^{-1} = R$}
+}
+}
+\normalpage{\labtitle Example 15.8}{}
+\putfig{.05}{.15}{.65}{ex8a}
+\putfig{.05}{.40}{.45}{ex8b}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Example 15.9}{%
+\begin{GFT}{SML}
+\+val A = [1, 2, 4];\\
+\+val B = [2, 6, 8, 10];\\
+\+fun f(a, b) = b - 4 = a;\\
+\+\\
+\+"Example 15.9";\\
+\+val R = List.filter divides(cartesianProduct(A, B));\\
+\+val S = List.filter f(cartesianProduct(A, B));\\
+\+union(R, S);\\
+\+intersection(R, S);\\
+\end{GFT}
+}
+\ctext{.50}{.15}{.50}{\large
+\qi{Given the following two relations\\
+    from A = \{1, 2, 4\} to B = \{2, 6, 8, 10\} :\\
+    \begin{tabular}{l}
+    $aRb$ if and only if $a|b.$\\
+    $aSb$ if and only if $b - 4 = a.$\\
+    \end{tabular}\\
+    List the elements of $R, S, R \cup S,$ and $R \cap S$.\\
+    \begin{align*}%
+         R        & = \{(1, 2),(1, 6),(1, 8),(1, 10),(2, 2),\\
+                  & \ \ \ \ \ \ (2, 6),(2, 8),(2, 10),(4, 8)\}\\
+         S        & = \{(2, 6),(4, 8)\}\\
+         R \cup S & = R\\
+         R \cap S & = S\\
+    \end{align*}}
+}
+\normalpage{\labtitle Example 15.9}{}
+\putfig{.05}{.15}{.90}{ex9}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Example 15.10}{%
+\begin{GFT}{SML}
+\+val R = [(1, 2), (1, 6), (2, 4), (3, 4), (3, 6), (3, 8)];\\
+\+val S = [(2, "u"), (4, "s"), (4, "t"), (6, "t"), (8, "u")];\\
+\+\\
+\+"Example 15.10";\\
+\+composition(R, S);\\
+\end{GFT}
+}
+\ctext{.05}{.70}{.50}{\large
+\qi{Find $S \circ R$.\\
+    \qii{\begin{tabular}{l}
+    $S \circ R = \{ (1, u),(1, t),(2, s),(2, t),(3, s),(3, t),(3, u)\}$\\
+    \end{tabular}}}
+}
+\normalpage{\labtitle Example 15.10}{}
+\putfig{.05}{.15}{.90}{ex10}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Problem 15.5}{}
+\ctext{.05}{.10}{.00}{
+\begin{GFT}{SML}
+\+val A = (1 -- 3); val B = ["a", "b", "c", "d"];\\
+\+\\
+\+"Problem 15.5(a)";\\
+\+val R = [(1, "d"), (2, "d"), (3, "a")];\\
+\+isFunction(R, A);\\
+\+range(R);\\
+\end{GFT}
+}
+\ctext{.50}{.20}{.00}{
+\begin{GFT}{SML}
+\+"Problem 15.5(b)";\\
+\+val R = [(1, "a"), (2, "b"), (2, "c"), (3, "d")];\\
+\+isFunction(R, A);\\
+\end{GFT}
+}
+\ctext{.05}{.50}{.90}{\large
+\qi[(a) ]{Is the relation $f = \{(1, d),(2, d),(3, a)\}$ a function from $A$ to $B$?\\
+          If so, find its range.\\
+          \qii{$f$ is a function from $A$ to $B$ since every element in $A$ maps to\\
+               exactly one element in $B$. The range of $f$ is the set $\{a, d\}$.}
+         }
+\qi[(b) ]{Is the relation $f = \{(1, a),(2, b),(2, c),(3, d)\}$ a function from $A$ to $B$?\\
+          If so, find its range.\\
+          \qii{$f$ is not a function since the element 2 is related to two members of $B$.}
+         }
+}
+\normalpage{\labtitle Problem 15.5}{}
+\putfig{.05}{.15}{.40}{pb5a}
+\putfig{.05}{.40}{.50}{pb5b}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Problem 15.7}{%
+\begin{GFT}{SML}
+\+val R = [("a", 1), ("b", 5), ("c", 2), ("d", 1)];\\
+\+\\
+\+"Problem 15.7";\\
+\+val I = inverse(R);\\
+\end{GFT}
+}
+\ctext{.05}{.40}{.90}{\large
+\qi{Find the inverse relation of $R = \{(a, 1),(b, 5),(c, 2),(d, 1)\}$.\\
+    Is the inverse relation a function?\\
+    \qii{$R^{-1} = \{(1, a),(5, b),(2, c),(1, d)\}$.\\
+         $R^{-1}$ is not a function since 1 is related to $a$ and $d$.}}
+}
+\putfig{.05}{.65}{.65}{pb7}
+
+%------------------------------------------------------------------------------
+
+\normalpage{\labtitle Problem 15.9}{%
+\begin{GFT}{SML}
+\+val A = ["a", "b", "c"];\\
+\+val B = [1, 2];\\
+\+val C = ["a", "b", "g"];\\
+\+val R = [("a", 1), ("a", 2), ("b", 2), ("c", 1)];\\
+\+val S = [(1, "a"), (2, "b"), (2, "g")];\\
+\+\\
+\+"Problem 15.9";\\
+\+composition(R, S);\\
+\end{GFT}
+}
+\ctext{.40}{.15}{.50}{\large
+\qi{Find $S \circ R$.\\
+    \qii{$S \circ R = \{(a, a),(a, b),(a, g),(b, b),(b, g),(c, a)\}$}}
+}
+\putfig{.05}{.65}{.75}{pb9}
+
+%------------------------------------------------------------------------------
+
+\end{document}

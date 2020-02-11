@@ -1,0 +1,31 @@
+\documentclass{ffslides}
+\ffpage{60}{\numexpr 9/16}
+\usepackage{fancyvrb}
+\begin{document}
+\normalpage{Lab 1 - lab.h}{
+	\VerbatimInput[firstline=13,lastline=50]{../includes/lab.h}
+}
+\normalpage{Lab 1 - main.cpp}{
+	\VerbatimInput[firstline=13,lastline=50]{../srcs/main.cpp}
+}
+\normalpage{Lab 1 - main.cpp}{
+	\VerbatimInput[firstline=51,lastline=85]{../srcs/main.cpp}
+}
+\normalpage{Lab 1 - loadDictionary.cpp}{
+	\VerbatimInput[firstline=13,lastline=50]{../srcs/loadDictionary.cpp}
+}
+\normalpage{Lab 1 - lookUpWord.cpp}{
+	\VerbatimInput[firstline=13,lastline=50]{../srcs/lookUpWord.cpp}
+}
+\normalpage{Lab 1 - insertWord.cpp}{
+	\VerbatimInput[firstline=13,lastline=50]{../srcs/insertWord.cpp}
+}
+\normalpage{Lab 1 - Result Screenshots}{
+}
+\btext{.05}{.11}{.15}{\Huge \textsc{Before}}
+\btext{.5}{.11}{.15}{\Huge \textsc{Result}}
+\putfig{.05}{.15}{.4}{before}
+\putfig{.5}{.15}{.4}{result}
+\btext{.05}{.46}{.15}{\Huge \textsc{After}}
+\putfig{.05}{.5}{.4}{after}
+\end{document}
